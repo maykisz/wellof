@@ -132,15 +132,13 @@ body.introOpen {
   overscroll-behavior: none;
 }
 
-.topbar,
-.hero {
+.topbar {
   transition:
     filter 600ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body.introBlurred .topbar,
-body.introBlurred .hero {
+body.introBlurred .topbar {
   filter: blur(8px);
 }
 
@@ -222,8 +220,9 @@ button {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 0 clamp(24px, 18.5vw, 352px);
-  border-top: 3px solid transparent;
+  column-gap: clamp(28px, 5vw, 82px);
+  padding: 0 clamp(20px, 5vw, 82px);
+  border: 0;
   transition:
     background-color 720ms cubic-bezier(0.22, 1, 0.36, 1),
     color 720ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -236,7 +235,7 @@ button {
   content: "";
   position: absolute;
   z-index: -1;
-  top: -3px;
+  top: 0;
   left: 0;
   right: 0;
   height: 0;
@@ -404,7 +403,6 @@ button {
   background: #050505;
 }
 
-.topbarHero .brand,
 .topbarHero .navLinks,
 .topbarHero .contactButton {
   opacity: 0;
@@ -488,204 +486,6 @@ button {
   justify-self: end;
 }
 
-.hero {
-  position: sticky;
-  top: 0;
-  z-index: 0;
-  height: 100svh;
-  min-height: 640px;
-  overflow: hidden;
-  isolation: isolate;
-  contain: layout paint;
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: auto 0 0;
-  height: clamp(260px, 44vh, 470px);
-  pointer-events: none;
-  background:
-    linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.82) 0%,
-      rgba(0, 0, 0, 0.62) 28%,
-      rgba(0, 0, 0, 0.30) 62%,
-      rgba(0, 0, 0, 0) 100%
-    );
-}
-
-.heroSlider {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
-  overflow: hidden;
-}
-
-.heroImage {
-  object-fit: cover;
-  object-position: center bottom;
-  opacity: 0;
-  transform: translate3d(0, 0, 0) scale(1.08);
-  transform-origin: center;
-  will-change: opacity, transform;
-  animation: heroSlideFade 18s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-.heroSlideOne {
-  opacity: 1;
-  animation-delay: -2s;
-}
-
-.heroSlideTwo {
-  object-position: 58% bottom;
-  animation-delay: 4s;
-}
-
-.heroSlideThree {
-  object-position: 42% bottom;
-  animation-delay: 10s;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.06) 48%, rgba(0, 0, 0, 0.28) 100%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.04) 48%, rgba(0, 0, 0, 0.08) 100%);
-}
-
-.heroContent {
-  position: absolute;
-  z-index: 1;
-  left: clamp(24px, 9.5vw, 152px);
-  right: clamp(24px, 9.5vw, 152px);
-  bottom: clamp(54px, 9vw, 122px);
-  display: grid;
-  gap: clamp(18px, 2vw, 28px);
-  color: #ffffff;
-}
-
-.heroKicker {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: clamp(13px, 1vw, 16px);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.heroContent h1 {
-  margin: 0;
-  color: #ffffff;
-  max-width: 920px;
-  font-size: clamp(72px, 8.2vw, 132px);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  line-height: 0.92;
-  letter-spacing: 0;
-  text-shadow:
-    0 10px 34px rgba(0, 0, 0, 0.42),
-    0 2px 10px rgba(0, 0, 0, 0.24);
-}
-
-.heroBottom {
-  display: grid;
-  grid-template-columns: max-content minmax(220px, 360px);
-  gap: clamp(22px, 3vw, 40px);
-  align-items: center;
-}
-
-.heroBottom > p {
-  margin: 0;
-  max-width: 34ch;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(15px, 1.1vw, 18px);
-  font-weight: 460;
-  line-height: 1.42;
-}
-
-.heroPreview {
-  width: clamp(248px, 23vw, 330px);
-  min-height: 74px;
-  padding: 8px 16px 8px 8px;
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 14px;
-  align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-}
-
-.heroPreview img {
-  width: 112px;
-  height: 58px;
-  display: block;
-  border-radius: 999px;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.04);
-}
-
-.heroPreview span {
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.18;
-  text-transform: uppercase;
-}
-
-.heroPlaneButton {
-  position: absolute;
-  z-index: 2;
-  right: clamp(28px, 8vw, 142px);
-  bottom: clamp(70px, 12vw, 154px);
-  width: clamp(92px, 9vw, 128px);
-  height: clamp(92px, 9vw, 128px);
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #ffffff;
-  color: #050505;
-  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.26);
-  transition:
-    transform 260ms ease,
-    background-color 260ms ease,
-    color 260ms ease;
-}
-
-.heroPlaneButton svg {
-  width: 56%;
-  height: 56%;
-  transform: rotate(2deg);
-}
-
-.heroPlaneButton:hover {
-  transform: translateY(-4px) scale(1.03);
-  background: #050505;
-  color: #ffffff;
-}
-
-@keyframes heroSlideFade {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(1.08);
-  }
-
-  8%,
-  34% {
-    opacity: 1;
-  }
-
-  42%,
-  100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(1.015);
-  }
-}
-
 @media (max-width: 900px) {
   :root {
     --nav-height: 78px;
@@ -693,6 +493,8 @@ button {
 
   .topbar {
     grid-template-columns: 1fr auto;
+    justify-content: stretch;
+    column-gap: 0;
     padding-inline: 20px;
   }
 
@@ -725,33 +527,6 @@ button {
   .menuFooter span:nth-child(2),
   .menuFooter span:last-child {
     justify-self: start;
-  }
-
-  .heroContent {
-    left: 22px;
-    right: 22px;
-    bottom: 28px;
-  }
-
-  .heroContent h1 {
-    font-size: clamp(58px, 17vw, 94px);
-    letter-spacing: 0;
-  }
-
-  .heroBottom {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .heroPreview {
-    width: min(100%, 330px);
-  }
-
-  .heroPlaneButton {
-    right: 22px;
-    bottom: clamp(178px, 28vh, 250px);
-    width: 76px;
-    height: 76px;
   }
 
 }

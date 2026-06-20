@@ -1,7 +1,7 @@
 import AboutSection from "./components/AboutSection/AboutSection";
 import ContactSection from "./components/ContactSection/ContactSection";
 import GallerySection from "./components/GallerySection/GallerySection";
-import Hero from "./components/Hero";
+import HeroSection from "./components/HeroSection/HeroSection";
 import InstagramSection from "./components/InstagramSection/InstagramSection";
 import IntroVideo from "./components/IntroVideo";
 import LocationSection from "./components/LocationSection/LocationSection";
@@ -15,7 +15,7 @@ export default function Home() {
     <main className="pageShell">
       <IntroVideo />
       <Navbar />
-      <Hero />
+      <HeroSection />
       <AboutSection />
       <ServicesSection />
       <TrustSection />

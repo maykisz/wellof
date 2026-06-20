@@ -221,47 +221,72 @@
 
 @media (max-width: 900px) {
   .section {
-    height: 620vh;
+    height: auto;
   }
 
   .stage {
-    padding: var(--nav-height) 20px 34px;
+    position: relative;
+    min-height: auto;
+    overflow: visible;
+    align-items: start;
+    padding: calc(var(--nav-height) + 38px) 20px 72px;
+    gap: 28px;
   }
 
   .eyebrow {
+    position: relative;
+    top: auto;
     left: 20px;
   }
 
   .title {
-    top: calc(var(--nav-height) + 4px);
-    left: -2vw;
-    width: 138vw;
+    position: relative;
+    top: auto;
+    left: -8vw;
+    order: 0;
+    width: 116vw;
   }
 
   .mediaStack {
-    width: min(86vw, 420px, calc((100svh - var(--nav-height) - 130px) * 0.86));
+    order: 1;
+    width: 100%;
     min-width: 0;
-    align-self: start;
+    aspect-ratio: auto;
+    display: grid;
+    gap: 14px;
+    transform: none !important;
   }
 
   .copyRail {
-    left: 20px;
-    right: 20px;
-    bottom: clamp(82px, 18vh, 150px);
+    position: relative;
+    order: 2;
+    left: auto;
+    right: auto;
+    bottom: auto;
     width: auto;
-    min-height: 270px;
+    min-height: 0;
+    display: grid;
+    gap: 18px;
   }
 
   .copyBlock {
+    position: relative;
+    inset: auto;
     grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 18px;
-    background: rgba(245, 245, 242, 0.78);
-    backdrop-filter: blur(12px);
+    gap: 10px;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .copyBlock:not(:first-child) {
+    display: none;
   }
 
   .cardCta {
-    inset: auto 22px clamp(52px, 10vh, 96px);
+    inset: auto 18px 22px;
   }
 
   .cardCta h3 {
@@ -270,5 +295,26 @@
 
   .copyHeading h3 {
     font-size: clamp(28px, 9vw, 42px);
+  }
+
+  .copyBlock p {
+    margin-left: 0;
+    max-width: 34ch;
+    font-size: 17px;
+    line-height: 1.42;
+    background: none;
+    -webkit-text-fill-color: rgba(5, 5, 5, 0.62);
+  }
+
+  .mediaCard {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 1.08;
+    transform: none !important;
+    opacity: 1;
+  }
+
+  .mediaCard:not(:first-child) {
+    display: none;
   }
 }

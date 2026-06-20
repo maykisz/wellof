@@ -63,12 +63,7 @@ export default function Navbar() {
       ].join(" ")}
       aria-label="Navegação principal"
     >
-      <a
-        className="brand"
-        href="/"
-        aria-hidden={isHero}
-        tabIndex={isHero ? -1 : undefined}
-      >
+      <a className="brand" href="/">
         <Image
           src={isLight ? "/logo-preta.png" : "/logo-branca.png"}
           alt="Well Of"
@@ -98,10 +93,6 @@ export default function Navbar() {
       </nav>
 
       <div className="navActions">
-        <a className="contactButton" href="/#contato" aria-hidden={isHero} tabIndex={isHero ? -1 : undefined}>
-          Fale conosco
-        </a>
-
         <button
           className={`menuButton ${isMenuOpen ? "menuButtonOpen" : ""}`}
           type="button"
