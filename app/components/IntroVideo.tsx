@@ -114,7 +114,53 @@ export default function IntroVideo() {
   const [isLeaving, setIsLeaving] = useState(false);
   const [isBlurred, setIsBlurred] = useState(true);
 
+  function dismissIntro(skipAnimation = false) {
+    if (isFinishedRef.current && !skipAnimation) {
+      return;
+    }
+
+    isFinishedRef.current = true;
+    setIsBlurred(false);
+    setIsLeaving(true);
+    document.body.classList.remove("introBlurred");
+
+    try {
+      window.sessionStorage.setItem("wellofIntroSeen", "true");
+    } catch {
+      // Ignore storage restrictions and still let the visitor enter the page.
+    }
+
+    const video = videoRef.current;
+    video?.pause();
+
+    window.setTimeout(
+      () => {
+        document.body.classList.remove("introOpen");
+        setIsVisible(false);
+      },
+      skipAnimation ? 120 : 720,
+    );
+  }
+
   useEffect(() => {
+    let introSeen = false;
+
+    try {
+      introSeen = window.sessionStorage.getItem("wellofIntroSeen") === "true";
+    } catch {
+      introSeen = false;
+    }
+
+    const shouldSkipIntro =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      introSeen;
+
+    if (shouldSkipIntro) {
+      setIsVisible(false);
+      document.body.classList.remove("introOpen", "introBlurred");
+      return;
+    }
+
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -201,15 +247,7 @@ export default function IntroVideo() {
         return;
       }
 
-      isFinishedRef.current = true;
-      setIsBlurred(false);
-      document.body.classList.remove("introBlurred");
-      setIsLeaving(true);
-
-      window.setTimeout(() => {
-        document.body.classList.remove("introOpen");
-        setIsVisible(false);
-      }, 720);
+      dismissIntro();
     };
 
     const drawFrame = () => {
@@ -318,6 +356,9 @@ export default function IntroVideo() {
         preload="auto"
       />
       <canvas ref={canvasRef} className="introCanvas" />
+      <button className="introSkipButton" type="button" onClick={() => dismissIntro(true)}>
+        Pular intro
+      </button>
     </div>
   );
 }

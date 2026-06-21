@@ -33,7 +33,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  filter: brightness(0.92) contrast(1.04) saturate(0.92);
+  filter: brightness(0.32) contrast(1.04) saturate(0.92);
   transform: scale(1.08);
   transform-origin: center;
 }
@@ -57,12 +57,12 @@
   display: flex;
   gap: clamp(18px, 2.4vw, 34px);
   transform: translateX(-50%);
-  color: #050505;
+  color: #ffffff;
   font-size: clamp(12px, 0.85vw, 14px);
   font-weight: 700;
   line-height: 1;
   text-transform: uppercase;
-  text-shadow: 0 1px 18px rgba(255, 255, 255, 0.34);
+  text-shadow: 0 1px 18px rgba(255, 255, 255, 0.137);
 }
 
 .bigLogo {

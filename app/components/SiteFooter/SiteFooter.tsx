@@ -157,7 +157,7 @@ export default function SiteFooter() {
           <div className={styles.legal}>
             <span>&copy; 2026 Well Of Hangar</span>
             <span>Campo de Marte, junto à CASP</span>
-            <span>CNPJ e endereço completo devem ser informados aqui.</span>
+            <span>Dados formais apresentados no atendimento e contrato.</span>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import styles from "./TrustSection.module.css";
 
 const trustSteps = [
-  "Acesso ao hangar combinado antes da chegada.",
-  "FBO, hangaragem e atendimento executivo como foco do serviço.",
-  "Chegada, permanência e saída alinhadas diretamente com a equipe.",
-  "Localização declarada no Campo de Marte, junto à CASP.",
-  "Dados formais da empresa apresentados no atendimento e contrato.",
+  "Acesso ao hangar combinado antes da chegada, com horário e responsável definidos.",
+  "FBO, hangaragem e atendimento executivo concentrados em uma base no Campo de Marte.",
+  "Chegada, permanência e saída alinhadas diretamente com a equipe local.",
+  "Endereço e rota exibidos na página para facilitar conferência antes da visita.",
+  "Dados formais da empresa apresentados no atendimento e no contrato.",
 ];
 
 export default function TrustSection() {
@@ -14,8 +14,8 @@ export default function TrustSection() {
       <div className={styles.header}>
         <p className={styles.eyebrow}>Por que confiar</p>
         <h2>
-          <span>Processo verificável</span>
-          <span>vale mais que promessa.</span>
+          <span>Processo claro</span>
+          <span>antes da chegada.</span>
         </h2>
       </div>
 

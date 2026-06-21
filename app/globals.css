@@ -210,6 +210,29 @@ button {
   will-change: transform, opacity;
 }
 
+.introSkipButton {
+  position: fixed;
+  z-index: 2;
+  right: clamp(18px, 4vw, 48px);
+  bottom: clamp(18px, 4vw, 48px);
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.54);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(12px);
+}
+
+.introSkipButton:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
 .topbar {
   position: fixed;
   z-index: 20;

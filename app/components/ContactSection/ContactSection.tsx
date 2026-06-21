@@ -10,7 +10,7 @@ export default function ContactSection() {
 
         <div className={styles.actions}>
           <a className={styles.whatsappButton} href="mailto:contato@wellof.com.br?subject=Contato%20Well%20Of%20Hangar">
-            Solicitar WhatsApp
+            Solicitar atendimento
           </a>
           <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
           <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">

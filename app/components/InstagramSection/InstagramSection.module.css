@@ -166,15 +166,13 @@
     background: #101010;
   }
 
-  .embedClip iframe {
+  .embedClip img {
     position: absolute;
-    left: 50%;
-    top: -72px;
-    width: 128%;
-    height: calc(100% + 152px);
-    border: 0;
-    background: #101010;
-    transform: translateX(-50%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
   }
 
   .embedClip::after {
@@ -392,9 +390,4 @@
         scale(0.66);
     }
 
-    .embedClip iframe {
-      top: -68px;
-      width: 132%;
-      height: calc(100% + 142px);
-    }
   }

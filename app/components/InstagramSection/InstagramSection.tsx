@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { type CSSProperties, useEffect, useState } from "react";
 import styles from "./InstagramSection.module.css";
 
@@ -8,37 +9,39 @@ const instagramPosts = [
     url: "https://www.instagram.com/p/DZYTUDeIPy7/",
     title: "Hangar Well Of",
     type: "Reel",
+    image: "/footer/wellof-footer-hangar.png",
   },
   {
     url: "https://www.instagram.com/p/DXmN3l6jqty/",
     title: "Atendimento Executivo",
     type: "Reel",
+    image: "/services/service-atendimento.png",
   },
   {
     url: "https://www.instagram.com/p/DY0vneisJZw/",
     title: "Aeronaves no Campo",
     type: "Post",
+    image: "/hero/wellof-hero-apron-night.png",
   },
   {
     url: "https://www.instagram.com/p/DZDn3uwoeeW/",
     title: "Rotina Well Of",
     type: "Reel",
+    image: "/about/team-inspection.png",
   },
   {
     url: "https://www.instagram.com/p/DZII10ROO5M/",
     title: "Sala VIP",
     type: "Post",
+    image: "/gallery/sala-vip-2.png",
   },
   {
     url: "https://www.instagram.com/p/DYph1x7o7OS/",
     title: "Hangar Well Of",
     type: "Reel",
+    image: "/services/service-hangaragem.png",
   },
 ];
-
-function getEmbedUrl(url: string) {
-  return `${url.endsWith("/") ? url : `${url}/`}embed`;
-}
 
 function getOffset(index: number, active: number) {
   const total = instagramPosts.length;
@@ -78,7 +81,7 @@ export default function InstagramSection() {
     <section className={styles.section} id="instagram" data-navbar-theme="light">
       <div className={styles.header}>
         <p className={styles.eyebrow}>Instagram</p>
-        <h2>Reels & posts</h2>
+        <h2>Rotina no hangar</h2>
         <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">
           @wellof.hangar
         </a>
@@ -107,11 +110,11 @@ export default function InstagramSection() {
                 }
               >
                 <div className={styles.embedClip}>
-                  <iframe
-                    src={getEmbedUrl(post.url)}
-                    title={`${post.title} no Instagram`}
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 900px) 78vw, 350px"
                   />
                 </div>
 
