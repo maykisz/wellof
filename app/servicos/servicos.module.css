@@ -102,8 +102,7 @@
 
 .featureImage img,
 .testimonialImage img,
-.detail img,
-.finalCta img {
+.detail img {
   width: 100%;
   height: 100%;
   display: block;
@@ -390,8 +389,7 @@
   line-height: 1.42;
 }
 
-.detail a,
-.finalCta a {
+.detail a {
   width: max-content;
   min-height: 42px;
   padding: 0 20px;
@@ -420,66 +418,6 @@
 .detail img {
   aspect-ratio: 1.34;
   border-radius: 4px;
-}
-
-.finalCta {
-  position: relative;
-  min-height: clamp(560px, 62vw, 820px);
-  padding: clamp(86px, 9vw, 128px) max(22px, calc((100vw - 1210px) / 2));
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  color: #ffffff;
-}
-
-.finalCta::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.78));
-}
-
-.finalCta img {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.finalCta div {
-  position: relative;
-  z-index: 2;
-  max-width: 760px;
-  display: grid;
-  gap: 22px;
-}
-
-.finalCta p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.finalCta h2 {
-  margin: 0;
-  font-size: clamp(58px, 7vw, 112px);
-  font-weight: 520;
-  line-height: 0.9;
-  letter-spacing: 0;
-}
-
-.finalCta a {
-  border-color: #ffffff;
-  background: #ffffff;
-  color: #151515;
-}
-
-.finalCta a:hover {
-  background: transparent;
-  color: #ffffff;
-  transform: translateY(-2px);
 }
 
 @media (max-width: 980px) {
@@ -568,8 +506,4 @@
     max-width: none;
   }
 
-  .finalCta {
-    min-height: 620px;
-    padding: 90px 22px;
-  }
 }

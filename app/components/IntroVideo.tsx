@@ -113,9 +113,11 @@ export default function IntroVideo() {
   const [isVisible, setIsVisible] = useState(true);
   const [isLeaving, setIsLeaving] = useState(false);
   const [isBlurred, setIsBlurred] = useState(true);
+  const [useFallback, setUseFallback] = useState(false);
+  const [posterUrl, setPosterUrl] = useState('/intro/poster.svg');
 
-  function dismissIntro(skipAnimation = false) {
-    if (isFinishedRef.current && !skipAnimation) {
+  function dismissIntro() {
+    if (isFinishedRef.current) {
       return;
     }
 
@@ -124,47 +126,54 @@ export default function IntroVideo() {
     setIsLeaving(true);
     document.body.classList.remove("introBlurred");
 
-    try {
-      window.sessionStorage.setItem("wellofIntroSeen", "true");
-    } catch {
-      // Ignore storage restrictions and still let the visitor enter the page.
-    }
-
     const video = videoRef.current;
     video?.pause();
 
-    window.setTimeout(
-      () => {
-        document.body.classList.remove("introOpen");
-        setIsVisible(false);
-      },
-      skipAnimation ? 120 : 720,
-    );
+    window.setTimeout(() => {
+      document.body.classList.remove("introOpen");
+      setIsVisible(false);
+    }, 720);
   }
 
   useEffect(() => {
-    let introSeen = false;
-
-    try {
-      introSeen = window.sessionStorage.getItem("wellofIntroSeen") === "true";
-    } catch {
-      introSeen = false;
-    }
-
-    const shouldSkipIntro =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      introSeen;
-
-    if (shouldSkipIntro) {
-      setIsVisible(false);
-      document.body.classList.remove("introOpen", "introBlurred");
-      return;
-    }
+    // Intro is mandatory: always run the intro sequence on page load.
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (!video || !canvas) {
+    if (!video) return;
+
+    // Detect slow connections or small screens and use a lightweight fallback.
+    const connection = (navigator as any).connection;
+    const effectiveType = connection?.effectiveType;
+    const saveData = connection?.saveData;
+    const isSmall = window.matchMedia("(max-width: 900px)").matches;
+    const isSlowNetwork = saveData || effectiveType === "2g" || effectiveType === "slow-2g" || effectiveType === "3g";
+
+    if (isSmall || isSlowNetwork) {
+      setUseFallback(true);
+
+      document.body.classList.add("introOpen", "introBlurred", "introFallback");
+
+      const finishIntro = () => {
+        if (isFinishedRef.current) return;
+        dismissIntro();
+      };
+
+      const onEnded = () => finishIntro();
+
+      video.addEventListener("ended", onEnded);
+      // attempt to play (mandatory intro)
+      void video.play().catch(() => undefined);
+
+      return () => {
+        video.removeEventListener("ended", onEnded);
+        document.body.classList.remove("introOpen", "introBlurred", "introFallback");
+      };
+    }
+
+    if (!canvas) {
+      setIsVisible(false);
       return;
     }
 
@@ -243,10 +252,7 @@ export default function IntroVideo() {
     };
 
     const finishIntro = () => {
-      if (isFinishedRef.current) {
-        return;
-      }
-
+      if (isFinishedRef.current) return;
       dismissIntro();
     };
 
@@ -337,6 +343,23 @@ export default function IntroVideo() {
     };
   }, []);
 
+  useEffect(() => {
+    const posterCandidate = '/video-inicial.poster.jpg';
+
+    const check = async () => {
+      try {
+        const res = await fetch(encodeURI(posterCandidate), { method: 'HEAD' });
+        if (res.ok) {
+          setPosterUrl(posterCandidate);
+          return;
+        }
+      } catch {}
+      setPosterUrl('/intro/poster.svg');
+    };
+
+    void check();
+  }, []);
+
   if (!isVisible) {
     return null;
   }
@@ -349,16 +372,15 @@ export default function IntroVideo() {
       <video
         ref={videoRef}
         className="introVideoSource"
-        src="/video inicial.mp4"
+        poster={posterUrl}
         autoPlay
         muted
         playsInline
         preload="auto"
-      />
+      >
+        <source src="/video-inicial.opt.mp4" type="video/mp4" />
+      </video>
       <canvas ref={canvasRef} className="introCanvas" />
-      <button className="introSkipButton" type="button" onClick={() => dismissIntro(true)}>
-        Pular intro
-      </button>
     </div>
   );
 }

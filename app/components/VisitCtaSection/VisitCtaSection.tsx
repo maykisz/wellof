@@ -60,7 +60,7 @@ export default function VisitCtaSection() {
       aria-labelledby="visit-cta-title"
     >
       <div className={styles.stickyFrame}>
-        <Image className={styles.image} src="/visit-cta/hangar-dawn.png" alt="" fill sizes="100vw" priority={false} />
+        <Image className={styles.image} src="/visit-cta/hangar-dawn.webp" alt="" fill sizes="100vw" priority={false} />
         <div className={styles.revealColumns} aria-hidden="true">
           {revealColumns.map((column) => (
             <span

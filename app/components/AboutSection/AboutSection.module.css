@@ -16,18 +16,6 @@
   padding: var(--nav-height) clamp(24px, 7vw, 120px) 42px;
 }
 
-.eyebrow {
-  position: absolute;
-  z-index: 5;
-  top: calc(var(--nav-height) + 14px);
-  left: clamp(24px, 7vw, 120px);
-  margin: 0;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
 .title {
   position: absolute;
   z-index: 1;
@@ -228,12 +216,6 @@
     overflow: visible;
     display: block;
     padding: 28px 0 48px;
-  }
-
-  .eyebrow {
-    position: relative;
-    top: auto;
-    left: 20px;
   }
 
   .title {

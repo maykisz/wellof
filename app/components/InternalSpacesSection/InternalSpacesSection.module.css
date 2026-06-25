@@ -1,3 +1,18 @@
+/* ─── Custom easing palette ───────────────────────────────────────────────────
+   Each named bezier has a specific motion personality:
+   --ease-spring  : overshoot entry, springy — for reveals and card pop
+   --ease-expo    : fast-in, long tail — for large transforms (grid, stage)
+   --ease-smooth  : symmetric S-curve — for opacity and color
+   --ease-snap    : immediate, soft land — for hover micro-interactions
+───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-expo:   cubic-bezier(0.16,  1,     0.3,  1);
+  --ease-smooth: cubic-bezier(0.37,  0,     0.63, 1);
+  --ease-snap:   cubic-bezier(0.34,  1.42,  0.64, 1);
+}
+
+/* ─── Section ─────────────────────────────────────────────────────────────── */
 .section {
   position: relative;
   z-index: 2;
@@ -7,6 +22,7 @@
   color: #080808;
 }
 
+/* Subtle grid texture */
 .section::before {
   content: "";
   position: absolute;
@@ -14,12 +30,13 @@
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(8, 8, 8, 0.045) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(8, 8, 8, 0.035) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(8, 8, 8, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(8, 8, 8, 0.03) 1px, transparent 1px);
   background-size: 96px 96px;
-  mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 84%, transparent 100%);
 }
 
+/* ─── Sticky stage ────────────────────────────────────────────────────────── */
 .stage {
   position: sticky;
   top: 0;
@@ -29,10 +46,19 @@
   display: grid;
   align-content: start;
   overflow: hidden;
-  transform: translate3d(0, var(--stage-y), 0);
-  opacity: var(--stage-opacity);
+
+  /* Driven by --stage-y / --stage-opacity from JS */
+  transform: translate3d(0, var(--stage-y, 0px), 0);
+  opacity: var(--stage-opacity, 1);
+
+  /* Slower, smoother exit than the default scroll pace */
+  transition:
+    transform 120ms linear,
+    opacity   120ms linear;
+  will-change: transform, opacity;
 }
 
+/* ─── Stage lighting layers ───────────────────────────────────────────────── */
 .stage::before,
 .stage::after {
   content: "";
@@ -42,39 +68,63 @@
   pointer-events: none;
 }
 
+/* Animated spotlight that follows pointer + scroll progress */
 .stage::before {
   background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, 0.56), transparent 16vw),
-    radial-gradient(circle at var(--spotlight-x) var(--spotlight-y), rgba(255, 255, 255, 0.96), transparent 23vw),
-    radial-gradient(circle at calc(100% - var(--spotlight-x)) 72%, rgba(8, 8, 8, 0.09), transparent 25vw);
-  opacity: calc(0.3 + var(--grid-progress) * 0.72);
-  filter: blur(10px);
-  transform: scale(1.04);
+    radial-gradient(
+      circle at var(--pointer-x, 50%) var(--pointer-y, 48%),
+      rgba(255, 255, 255, 0.52),
+      transparent 15vw
+    ),
+    radial-gradient(
+      circle at var(--spotlight-x, 18%) var(--spotlight-y, 32%),
+      rgba(255, 255, 255, 0.92),
+      transparent 22vw
+    );
+  opacity: calc(0.28 + var(--grid-progress, 0) * 0.74);
+  filter: blur(12px);
+  transform: scale(1.06);
+  /* Smooth the lighting transitions */
+  transition: opacity 600ms var(--ease-smooth);
 }
 
+/* Edge vignette — keeps focus on content */
 .stage::after {
   background:
-    linear-gradient(180deg, rgba(245, 245, 242, 0.96) 0%, transparent 22%, transparent 78%, rgba(245, 245, 242, 0.9) 100%),
-    linear-gradient(90deg, rgba(245, 245, 242, 0.78) 0%, transparent 14%, transparent 86%, rgba(245, 245, 242, 0.78) 100%);
+    linear-gradient(180deg,
+      rgba(245, 245, 242, 0.98) 0%,
+      transparent 18%,
+      transparent 80%,
+      rgba(245, 245, 242, 0.92) 100%
+    ),
+    linear-gradient(90deg,
+      rgba(245, 245, 242, 0.8) 0%,
+      transparent 12%,
+      transparent 88%,
+      rgba(245, 245, 242, 0.8) 100%
+    );
 }
 
+/* ─── Watermark ───────────────────────────────────────────────────────────── */
 .watermark {
   position: absolute;
   z-index: 0;
-  top: calc(var(--nav-height) - 26px);
+  top: calc(var(--nav-height, 64px) - 26px);
   left: max(12px, calc((100vw - 1480px) / 2));
-  color: rgba(8, 8, 8, 0.045);
-  font-family: var(--font-expanded);
+  color: rgba(8, 8, 8, 0.042);
+  font-family: var(--font-expanded, sans-serif);
   font-size: clamp(82px, 13vw, 198px);
   font-weight: 700;
   line-height: 0.8;
   pointer-events: none;
   text-transform: uppercase;
-  transform: translate3d(var(--watermark-x), var(--watermark-y), 0) scale(var(--watermark-scale));
-  opacity: var(--watermark-opacity);
   white-space: nowrap;
+  transform: translate3d(var(--watermark-x, 0), var(--watermark-y, 0), 0) scale(var(--watermark-scale, 1));
+  opacity: var(--watermark-opacity, 1);
+  /* No CSS transition — driven frame-by-frame via JS var for zero lag */
 }
 
+/* ─── Image title ─────────────────────────────────────────────────────────── */
 .imageTitle {
   position: relative;
   z-index: 1;
@@ -84,7 +134,9 @@
   margin: 0 0 clamp(8px, 1vw, 14px);
   pointer-events: none;
   mix-blend-mode: multiply;
-  transform: translate3d(-50%, calc(var(--header-y) * 0.35), 0);
+  transform: translate3d(-50%, calc(var(--header-y, 0px) * 0.34), 0);
+  opacity: var(--header-opacity, 1);
+  will-change: transform, opacity;
 }
 
 .imageTitle img {
@@ -93,19 +145,12 @@
   display: block;
 }
 
-.imageTitle::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.22;
-}
-
+/* ─── Reel grid ───────────────────────────────────────────────────────────── */
 .reelGrid {
   position: relative;
   z-index: 1;
   width: min(100%, 1460px);
   justify-self: center;
-  margin-top: 0;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-template-areas:
@@ -115,97 +160,104 @@
     "operation operation operation operation operation operation hangar hangar hangar pilot pilot pilot";
   grid-auto-rows: clamp(86px, 6.4vw, 118px);
   gap: clamp(12px, 1.25vw, 18px);
-  opacity: var(--grid-progress);
-  transform: translate3d(0, var(--grid-y), 0) scale(var(--grid-scale));
+
+  opacity: var(--grid-progress, 0);
+  transform: translate3d(0, var(--grid-y, 34px), 0) scale(var(--grid-scale, 0.985));
   transform-origin: center top;
-  perspective: 1200px;
+  perspective: 1400px;
   will-change: opacity, transform;
 }
 
+/* ─── Card ────────────────────────────────────────────────────────────────── */
 .card {
   position: relative;
   min-height: 0;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 0;
   padding: 0;
-  background: #111111;
-  box-shadow:
-    0 22px 56px rgba(0, 0, 0, calc(0.1 + var(--card-focus) * 0.12)),
-    0 1px 0 rgba(255, 255, 255, calc(0.16 + var(--card-focus) * 0.18)) inset;
+  background: #0e0e0e;
   isolation: isolate;
-  opacity: var(--card-reveal);
-  clip-path: inset(var(--wipe-y) 0 0 0 round 8px);
-  transform:
-    translate3d(0, var(--card-y), calc(var(--card-focus) * 42px))
-    rotateX(calc(var(--card-focus) * -1.4deg))
-    scale(var(--card-scale));
-  transform-origin: center bottom;
   cursor: pointer;
   text-align: left;
+
+  /* Shadow computed from focus variable */
+  box-shadow:
+    0 2px 8px  rgba(0, 0, 0, 0.08),
+    0 22px 56px rgba(0, 0, 0, calc(0.08 + var(--card-focus, 0) * 0.14)),
+    0 1px 0 rgba(255, 255, 255, calc(0.14 + var(--card-focus, 0) * 0.2)) inset;
+
+  /* Entrance: clip-path wipe from bottom */
+  opacity: var(--card-reveal, 0);
+  clip-path: inset(var(--wipe-y, 100%) 0% 0% 0% round 10px);
+
+  transform:
+    translate3d(0, var(--card-y, 38px), calc(var(--card-focus, 0) * 48px))
+    rotateX(calc(var(--card-focus, 0) * -1.6deg))
+    scale(var(--card-scale, 0.965));
+  transform-origin: center bottom;
+  transform-style: preserve-3d;
+
   transition:
-    box-shadow 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow  500ms var(--ease-expo),
+    filter      500ms var(--ease-expo);
   will-change: clip-path, opacity, transform;
 }
 
 .card:focus-visible {
-  outline: 2px solid rgba(8, 8, 8, 0.72);
+  outline: 2px solid rgba(8, 8, 8, 0.7);
   outline-offset: 4px;
 }
 
+/* Inner border — brightens with focus */
 .card::before {
   content: "";
   position: absolute;
   z-index: 4;
   inset: 0;
   pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, calc(0.16 + var(--card-focus) * 0.34));
+  border: 1px solid rgba(255, 255, 255, calc(0.14 + var(--card-focus, 0) * 0.36));
   border-radius: inherit;
-  box-shadow: 0 0 0 1px rgba(8, 8, 8, 0.06) inset;
-  opacity: calc(0.42 + var(--card-focus) * 0.38);
+  opacity: calc(0.38 + var(--card-focus, 0) * 0.42);
+  transition: opacity 400ms var(--ease-smooth), border-color 400ms var(--ease-smooth);
 }
 
-.card[data-area="operation"] {
-  grid-area: operation;
+/* Sweep sheen — fires on reveal, then on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 44%,
+    transparent 60%
+  );
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+  mix-blend-mode: screen;
+  /* Sheen appears during reveal then idles */
+  animation: sheenReveal 1s var(--ease-expo) var(--sheen-delay, 0ms) 1 both;
 }
 
-.card[data-area="vip"] {
-  grid-area: vip;
+.card:hover::after {
+  opacity: 0.08;
+  transform: translate3d(100%, 0, 0);
+  transition:
+    opacity   300ms var(--ease-smooth),
+    transform 700ms var(--ease-expo);
 }
 
-.card[data-area="vip"] .video,
-.card[data-area="vip"] .cardShade::after {
-  animation-delay: -2.6s;
-}
+/* ─── Card area assignments ───────────────────────────────────────────────── */
+.card[data-area="operation"] { grid-area: operation; }
+.card[data-area="vip"]       { grid-area: vip; }
+.card[data-area="meeting"]   { grid-area: meeting; }
+.card[data-area="hangar"]    { grid-area: hangar; }
+.card[data-area="pilot"]     { grid-area: pilot; }
 
-.card[data-area="meeting"] {
-  grid-area: meeting;
-}
-
-.card[data-area="meeting"] .video,
-.card[data-area="meeting"] .cardShade::after {
-  animation-delay: -4.1s;
-}
-
-.card[data-area="hangar"] {
-  grid-area: hangar;
-}
-
-.card[data-area="hangar"] .video,
-.card[data-area="hangar"] .cardShade::after {
-  animation-delay: -1.4s;
-}
-
-.card[data-area="pilot"] {
-  grid-area: pilot;
-}
-
-.card[data-area="pilot"] .video,
-.card[data-area="pilot"] .cardShade::after {
-  animation-delay: -5.2s;
-}
-
+/* ─── Video ───────────────────────────────────────────────────────────────── */
 .video {
   position: absolute;
   inset: 0;
@@ -214,86 +266,107 @@
   display: block;
   object-fit: cover;
   filter:
-    brightness(calc(0.84 + var(--card-focus) * 0.16))
-    contrast(1.05)
-    saturate(calc(0.9 + var(--card-focus) * 0.16));
-  transform: scale(var(--video-scale));
-  animation: cinematicDrift 12s ease-in-out infinite alternate;
+    brightness(calc(0.82 + var(--card-focus, 0) * 0.18))
+    contrast(1.06)
+    saturate(calc(0.88 + var(--card-focus, 0) * 0.18));
+
+  /* Scale driven by JS var; drift is additive via animation */
+  transform: scale(var(--video-scale, 1.04));
+  will-change: transform, filter;
+
+  /* Separated from the card transition to avoid fighting with JS vars */
   transition:
-    filter 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 860ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+    filter    480ms var(--ease-expo),
+    transform 800ms var(--ease-expo);
 }
 
-.card[data-area="operation"] .video {
-  object-position: center 54%;
+/*
+ * Cinematic drift: uses fixed scale offset so it doesn't fight --video-scale.
+ * translate3d only — no scale conflict.
+ */
+@keyframes cinematicDrift {
+  0%   { translate: -0.6%  -0.3%; }
+  33%  { translate:  0.4%  -0.5%; }
+  66%  { translate:  0.5%   0.3%; }
+  100% { translate: -0.5%   0.4%; }
 }
 
-.card[data-area="vip"] .video {
-  object-position: center 44%;
+.video {
+  animation: cinematicDrift 14s ease-in-out infinite alternate;
 }
 
-.card[data-area="meeting"] .video {
-  object-position: center 48%;
-}
-
-.card[data-area="hangar"] .video {
-  object-position: center 52%;
-}
-
-.card[data-area="pilot"] .video {
-  object-position: center 42%;
-}
-
+/* Pause drift on hover so user sees a still */
 .card:hover .video {
-  filter: brightness(0.78) contrast(1.05) saturate(0.96);
   animation-play-state: paused;
-  transform: scale(calc(var(--video-scale) + 0.02)) translate3d(0, 0, 0);
+  filter:
+    brightness(0.76)
+    contrast(1.05)
+    saturate(0.94);
+  transform: scale(calc(var(--video-scale, 1.04) + 0.024));
+  transition-duration: 400ms;
 }
 
-.card:hover {
-  box-shadow:
-    0 30px 74px rgba(0, 0, 0, 0.18),
-    0 1px 0 rgba(255, 255, 255, 0.28) inset;
-}
+/* Stagger drift start per card so they never move in unison */
+.card[data-area="vip"]     .video { animation-delay: -3.8s; }
+.card[data-area="meeting"] .video { animation-delay: -6.2s; }
+.card[data-area="hangar"]  .video { animation-delay: -1.9s; }
+.card[data-area="pilot"]   .video { animation-delay: -9.1s; }
 
+/* object-position per card */
+.card[data-area="operation"] .video { object-position: center 54%; }
+.card[data-area="vip"]       .video { object-position: center 44%; }
+.card[data-area="meeting"]   .video { object-position: center 48%; }
+.card[data-area="hangar"]    .video { object-position: center 52%; }
+.card[data-area="pilot"]     .video { object-position: center 42%; }
+
+/* ─── Card shade / overlay ────────────────────────────────────────────────── */
 .cardShade {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, calc(var(--card-focus) * 0.18)), transparent 36%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.82) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.18));
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,calc(var(--card-focus, 0) * 0.16)), transparent 34%),
+    linear-gradient(180deg,
+      rgba(0,0,0,0.03) 0%,
+      rgba(0,0,0,0.00) 30%,
+      rgba(0,0,0,0.86) 100%
+    ),
+    linear-gradient(90deg,
+      rgba(0,0,0,0.16),
+      rgba(0,0,0,0) 40%,
+      rgba(0,0,0,0.16)
+    );
 }
 
+/* Soft sheen sweep — runs on a longer, more cinematic cycle */
 .cardShade::after {
   content: "";
   position: absolute;
-  inset: -25% -70%;
-  background: linear-gradient(108deg, transparent 34%, rgba(255, 255, 255, 0.22) 50%, transparent 66%);
-  opacity: 0.1;
-  transform: translate3d(-38%, 0, 0) rotate(2deg);
-  animation: softSweep 8.5s cubic-bezier(0.45, 0, 0.15, 1) infinite;
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  z-index: 3;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.2) 46%, transparent 62%);
-  opacity: calc(var(--card-reveal) * (0.05 + var(--card-focus) * 0.1));
-  transform: translate3d(calc((1 - var(--card-reveal)) * -80% + var(--card-focus) * 18%), 0, 0);
-  mix-blend-mode: screen;
-}
-
-.card:hover::after {
+  inset: -30% -80%;
+  background: linear-gradient(
+    110deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 68%
+  );
   opacity: 0.08;
+  animation: softSweep 11s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
 }
 
+.card[data-area="vip"]     .cardShade::after { animation-delay: -3.1s; }
+.card[data-area="meeting"] .cardShade::after { animation-delay: -5.4s; }
+.card[data-area="hangar"]  .cardShade::after { animation-delay: -1.7s; }
+.card[data-area="pilot"]   .cardShade::after { animation-delay: -8.3s; }
+
+@keyframes softSweep {
+  0%, 22%   { transform: translate3d(-44%, 0, 0) rotate(1.5deg); opacity: 0; }
+  40%       { opacity: 0.12; }
+  60%, 100% { transform: translate3d(44%,  0, 0) rotate(1.5deg); opacity: 0; }
+}
+
+/* ─── Watch pill ──────────────────────────────────────────────────────────── */
 .watchPill {
   position: absolute;
   z-index: 4;
@@ -301,41 +374,45 @@
   right: clamp(14px, 1.25vw, 20px);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  gap: 7px;
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 999px;
-  padding: 9px 13px 8px;
-  background: rgba(8, 8, 8, 0.28);
+  padding: 8px 14px 8px 12px;
+  background: rgba(8, 8, 8, 0.26);
   color: #ffffff;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Hidden by default — appears on hover with spring */
   opacity: 0;
-  transform: translate3d(0, -8px, 0);
-  backdrop-filter: blur(10px);
+  transform: translate3d(0, -10px, 0) scale(0.92);
   transition:
-    opacity 260ms ease,
-    transform 260ms ease,
-    background 260ms ease;
+    opacity   220ms var(--ease-smooth),
+    transform 320ms var(--ease-snap),
+    background 220ms var(--ease-smooth);
 }
 
 .watchPill::before {
   content: "";
   width: 0;
   height: 0;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 6px solid currentColor;
+  border-top:    4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  border-left:   6px solid currentColor;
 }
 
 .card:hover .watchPill,
 .card:focus-visible .watchPill {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
+/* ─── Card copy ───────────────────────────────────────────────────────────── */
 .cardCopy {
   position: absolute;
   z-index: 2;
@@ -345,27 +422,30 @@
   display: grid;
   gap: 8px;
   color: #ffffff;
-  opacity: calc(0.18 + var(--card-reveal) * 0.62 + var(--card-focus) * 0.2);
-  transform: translate3d(0, var(--copy-y), 0);
+  opacity: calc(0.16 + var(--card-reveal, 0) * 0.64 + var(--card-focus, 0) * 0.2);
+  transform: translate3d(0, var(--copy-y, 16px), 0);
   transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity   500ms var(--ease-expo),
+    transform 600ms var(--ease-expo);
 }
 
+/* Animated rule — grows in as card reveals */
 .cardCopy::before {
   content: "";
-  width: calc(18px + var(--card-reveal) * 34px);
+  display: block;
+  width: calc(16px + var(--card-reveal, 0) * 38px);
   height: 1px;
   margin-bottom: 2px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.76);
   transform-origin: left center;
+  transition: width 600ms var(--ease-expo);
 }
 
 .cardCopy span {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 10px;
   font-weight: 900;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -376,7 +456,8 @@
   font-size: clamp(22px, 1.9vw, 32px);
   font-weight: 650;
   line-height: 0.96;
-  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.46);
+  letter-spacing: -0.01em;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .card[data-area="operation"] .cardCopy h3 {
@@ -386,15 +467,35 @@
   line-height: 0.88;
 }
 
+/* Card hover state */
+.card:hover {
+  box-shadow:
+    0 2px 8px   rgba(0, 0, 0, 0.06),
+    0 32px 78px rgba(0, 0, 0, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.28) inset;
+  transition-duration: 300ms;
+}
+
+/* ─── Sheen reveal keyframe ───────────────────────────────────────────────── */
+@keyframes sheenReveal {
+  0%   { opacity: 0.18; transform: translate3d(-90%, 0, 0); }
+  60%  { opacity: 0.10; }
+  100% { opacity: 0;    transform: translate3d(100%, 0, 0); }
+}
+
+/* ─── Lightbox ────────────────────────────────────────────────────────────── */
 .lightbox {
   position: fixed;
   z-index: 9999;
   inset: 0;
-  padding: 0;
   display: grid;
   place-items: center;
-  background: #050505;
-  animation: lightboxFade 260ms ease-out both;
+
+  /* Blurred backdrop instead of flat black */
+  background: rgba(4, 4, 4, 0.92);
+  backdrop-filter: blur(24px) saturate(0.6);
+  -webkit-backdrop-filter: blur(24px) saturate(0.6);
+  animation: lightboxFade 300ms var(--ease-expo) both;
 }
 
 .lightboxPanel {
@@ -402,8 +503,8 @@
   width: 100vw;
   height: 100svh;
   overflow: hidden;
-  background: #050505;
-  animation: lightboxRise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  background: #040404;
+  animation: lightboxRise 480ms var(--ease-expo) both;
 }
 
 .lightboxHeader {
@@ -423,12 +524,11 @@
   position: absolute;
   inset: 50% auto auto 50%;
   overflow: hidden;
-  width: max(100vw, 177.778svh);
-  height: max(100svh, 56.25vw);
-  aspect-ratio: 16 / 9;
+  width:  max(100vw,   177.778svh);
+  height: max(100svh,  56.25vw);
   background: #080808;
   transform: translate3d(-50%, -50%, 0);
-  animation: mediaSwap 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: mediaSwap 500ms var(--ease-expo) both;
 }
 
 .lightboxMedia video {
@@ -436,7 +536,7 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  background: #050505;
+  background: #040404;
 }
 
 .lightboxFooter {
@@ -447,7 +547,11 @@
   bottom: 0;
   padding: clamp(92px, 14vw, 190px) clamp(22px, 5vw, 86px) clamp(26px, 4vw, 58px);
   pointer-events: none;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.64) 38%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.68) 35%,
+    rgba(0,0,0,0) 100%
+  );
 }
 
 .lightboxZones {
@@ -466,24 +570,26 @@
   background: transparent;
   color: #ffffff;
   pointer-events: auto;
+  cursor: pointer;
 }
 
+/* Zone arrow circle */
 .lightboxZones button::after {
   content: "";
   position: absolute;
   top: 50%;
-  width: 46px;
-  height: 46px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,0.24);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0,0,0,0.16);
   opacity: 0;
-  transform: translateY(-50%);
-  backdrop-filter: blur(12px);
+  transform: translateY(-50%) scale(0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition:
-    opacity 220ms ease,
-    transform 220ms ease,
-    background 220ms ease;
+    opacity   220ms var(--ease-smooth),
+    transform 280ms var(--ease-snap);
 }
 
 .lightboxZones button::before {
@@ -493,98 +599,83 @@
   top: 50%;
   width: 12px;
   height: 12px;
-  border-top: 2px solid currentColor;
+  border-top:  2px solid currentColor;
   opacity: 0;
   transition:
-    opacity 220ms ease,
-    transform 220ms ease;
+    opacity   220ms var(--ease-smooth),
+    transform 280ms var(--ease-snap);
 }
 
-.lightboxZones button:hover::after,
+.lightboxZones button:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
 .lightboxZones button:hover::before {
   opacity: 1;
 }
 
-.lightboxZonePrev {
-  cursor: pointer;
-}
-
-.lightboxZonePrev::after {
-  left: clamp(16px, 3vw, 44px);
-}
-
+/* Prev */
+.lightboxZonePrev::after  { left: clamp(16px, 3vw, 44px); }
 .lightboxZonePrev::before {
-  left: calc(clamp(16px, 3vw, 44px) + 19px);
+  left: calc(clamp(16px, 3vw, 44px) + 20px);
   border-left: 2px solid currentColor;
   transform: translateY(-50%) rotate(-45deg);
 }
+.lightboxZonePrev:hover::after  { transform: translate(-5px, -50%) scale(1); }
+.lightboxZonePrev:hover::before { transform: translate(-5px, -50%) rotate(-45deg); }
 
-.lightboxZonePrev:hover::after {
-  transform: translate(-4px, -50%);
-}
-
-.lightboxZonePrev:hover::before {
-  transform: translate(-4px, -50%) rotate(-45deg);
-}
-
-.lightboxZoneNext {
-  cursor: pointer;
-}
-
-.lightboxZoneNext::after {
-  right: clamp(16px, 3vw, 44px);
-}
-
+/* Next */
+.lightboxZoneNext::after  { right: clamp(16px, 3vw, 44px); }
 .lightboxZoneNext::before {
-  right: calc(clamp(16px, 3vw, 44px) + 19px);
+  right: calc(clamp(16px, 3vw, 44px) + 20px);
   border-right: 2px solid currentColor;
   transform: translateY(-50%) rotate(45deg);
 }
+.lightboxZoneNext:hover::after  { transform: translate(5px, -50%) scale(1); }
+.lightboxZoneNext:hover::before { transform: translate(5px, -50%) rotate(45deg); }
 
-.lightboxZoneNext:hover::after {
-  transform: translate(4px, -50%);
-}
-
-.lightboxZoneNext:hover::before {
-  transform: translate(4px, -50%) rotate(45deg);
-}
-
+/* ─── Lightbox progress bar ───────────────────────────────────────────────── */
 .lightboxProgress {
   width: min(520px, 72vw);
   height: 2px;
   margin: 0 0 clamp(18px, 2vw, 28px);
+  background: rgba(255,255,255,0.18);
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.22);
-  transform-origin: left center;
 }
 
 .lightboxProgress span {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   background: #ffffff;
   transform-origin: left center;
-  transition: transform 120ms linear;
+  /* scaleX driven by videoProgress in JSX */
+  transition: transform 100ms linear;
 }
 
+/* ─── Lightbox close ──────────────────────────────────────────────────────── */
 .lightboxClose {
   flex: 0 0 auto;
   position: relative;
   width: 52px;
   height: 52px;
-  border: 1px solid rgba(8, 8, 8, 0.12);
+  border: 1px solid rgba(8,8,8,0.1);
   border-radius: 50%;
   padding: 0;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255,255,255,0.96);
   color: #080808;
   cursor: pointer;
   pointer-events: auto;
-  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
-  backdrop-filter: blur(14px);
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.12),
+    0 16px 44px rgba(0,0,0,0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition:
-    background 220ms ease,
-    border-color 220ms ease,
-    transform 220ms ease;
+    background   220ms var(--ease-smooth),
+    transform    280ms var(--ease-snap),
+    border-color 220ms var(--ease-smooth);
 }
 
 .lightboxClose::before,
@@ -594,36 +685,36 @@
   top: 50%;
   left: 50%;
   width: 18px;
-  height: 2px;
+  height: 1.5px;
   border-radius: 999px;
   background: currentColor;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
-  transform: translate3d(-50%, -50%, 0) rotate(45deg);
+  transform: translate3d(-50%,-50%,0) rotate(45deg);
 }
 
 .lightboxClose::after {
-  transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+  transform: translate3d(-50%,-50%,0) rotate(-45deg);
 }
 
 .lightboxClose:hover {
   background: #ffffff;
-  border-color: rgba(8, 8, 8, 0.22);
-  transform: translateY(-1px);
+  border-color: rgba(8,8,8,0.18);
+  transform: scale(1.08) rotate(90deg);
 }
 
+/* ─── Lightbox copy ───────────────────────────────────────────────────────── */
 .lightboxCopy {
   display: grid;
   max-width: min(760px, 90vw);
-  gap: 9px;
+  gap: 10px;
   color: #ffffff;
-  animation: copySwap 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: copySwap 400ms var(--ease-expo) both;
 }
 
 .lightboxCopy span {
-  color: rgba(255, 255, 255, 0.58);
+  color: rgba(255,255,255,0.54);
   font-size: 10px;
   font-weight: 900;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -631,102 +722,60 @@
   margin: 0;
   font-size: clamp(38px, 6.2vw, 104px);
   font-weight: 680;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.036em;
   line-height: 0.84;
-  text-shadow: 0 12px 36px rgba(0, 0, 0, 0.58);
+  text-shadow: 0 12px 40px rgba(0,0,0,0.62);
 }
 
+/* ─── Lightbox keyframes ──────────────────────────────────────────────────── */
 @keyframes lightboxFade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes lightboxRise {
-  from {
-    opacity: 0;
-    transform: scale(1.015);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(1.018) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)     translateY(0); }
 }
 
 @keyframes mediaSwap {
-  from {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(1.025);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(-50%, -50%, 0) scale(1);
-  }
+  from { opacity: 0; transform: translate3d(-50%,-50%,0) scale(1.03); filter: blur(4px); }
+  to   { opacity: 1; transform: translate3d(-50%,-50%,0) scale(1);    filter: blur(0);  }
 }
 
 @keyframes copySwap {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 18px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: translate3d(0,  0px, 0); }
 }
 
-@keyframes cinematicDrift {
-  0% {
-    transform: scale(calc(var(--video-scale) + 0.012)) translate3d(-0.7%, -0.4%, 0);
-  }
-
-  100% {
-    transform: scale(calc(var(--video-scale) + 0.035)) translate3d(0.7%, 0.45%, 0);
-  }
-}
-
-@keyframes softSweep {
-  0%,
-  28% {
-    transform: translate3d(-42%, 0, 0) rotate(2deg);
-    opacity: 0;
-  }
-
-  46% {
-    opacity: 0.18;
-  }
-
-  72%,
-  100% {
-    transform: translate3d(42%, 0, 0) rotate(2deg);
-    opacity: 0;
-  }
-}
-
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .stage,
   .watermark,
   .imageTitle,
   .reelGrid,
-  .card {
-    opacity: 1;
-    clip-path: none;
-    transform: none;
+  .card,
+  .card::before,
+  .card::after,
+  .cardShade::after,
+  .watchPill,
+  .cardCopy,
+  .lightbox,
+  .lightboxPanel,
+  .lightboxMedia,
+  .lightboxCopy,
+  .lightboxClose {
+    animation: none !important;
+    transition-duration: 1ms !important;
+    transition-delay:    0ms !important;
   }
 
-  .video {
-    animation: none;
-    transition-duration: 1ms;
-  }
+  .stage { transform: none !important; opacity: 1 !important; }
+  .reelGrid { opacity: 1 !important; transform: none !important; }
+  .card { opacity: 1 !important; clip-path: none !important; transform: none !important; }
 }
 
+/* ─── 1180px breakpoint ───────────────────────────────────────────────────── */
 @media (max-width: 1180px) {
   .reelGrid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -742,9 +791,9 @@
   .card[data-area="operation"] .cardCopy h3 {
     font-size: clamp(38px, 6vw, 64px);
   }
-
 }
 
+/* ─── Mobile ≤900px ───────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .section {
     height: auto;
@@ -758,8 +807,8 @@
     min-height: auto;
     padding: 0;
     overflow: visible;
-    transform: none;
-    opacity: 1;
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .watermark {
@@ -772,35 +821,60 @@
 
   .imageTitle {
     position: relative;
-    top: auto;
     left: 50%;
     width: 180vw;
     margin: 0 0 14px;
-    opacity: 0.18;
+    opacity: 0.16;
     transform: translateX(-50%);
   }
 
+  /* Horizontal scroll reel */
   .reelGrid {
     margin-top: 26px;
-    padding: 0 20px 8px;
+    padding: 0 20px 16px;
     display: flex;
     gap: 12px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
-  .reelGrid::-webkit-scrollbar {
-    display: none;
+  .reelGrid::-webkit-scrollbar { display: none; }
+
+  /* Fade edges on the reel */
+  .reelGrid::before,
+  .reelGrid::after {
+    content: "";
+    position: sticky;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    flex: 0 0 20px;
+    pointer-events: none;
   }
 
+  .reelGrid::before {
+    left: 0;
+    background: linear-gradient(90deg, #f5f5f2, transparent);
+  }
+
+  .reelGrid::after {
+    right: 0;
+    background: linear-gradient(270deg, #f5f5f2, transparent);
+  }
+
+  /* Card in mobile horizontal reel */
   .card {
     flex: 0 0 min(72vw, 300px);
     aspect-ratio: 9 / 16;
     scroll-snap-align: start;
-    opacity: 1;
-    clip-path: none;
-    transform: none;
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+    border-radius: 12px;
   }
 
   .card[data-area="operation"] {
@@ -814,9 +888,35 @@
     line-height: 0.96;
   }
 
-  .lightbox {
-    padding: 0;
+  .cardCopy {
+    opacity: 1 !important;
+    transform: none !important;
   }
+
+  /* Scroll dot indicator */
+  .scrollDots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 18px;
+    padding: 0 20px;
+  }
+
+  .scrollDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(8,8,8,0.2);
+    transition: background 300ms var(--ease-smooth), transform 300ms var(--ease-snap);
+  }
+
+  .scrollDot[data-active="true"] {
+    background: rgba(8,8,8,0.7);
+    transform: scale(1.4);
+  }
+
+  /* Lightbox mobile */
+  .lightbox { padding: 0; }
 
   .lightboxPanel {
     width: 100vw;
@@ -824,31 +924,22 @@
     border-radius: 0;
   }
 
-  .lightboxHeader {
-    padding: 14px;
-  }
+  .lightboxHeader { padding: 14px; }
 
   .lightboxMedia {
-    width: max(100vw, 177.778svh);
-    height: max(100svh, 56.25vw);
+    width:  max(100vw,  177.778svh);
+    height: max(100svh,  56.25vw);
   }
 
-  .lightboxFooter {
-    padding: 96px 20px 28px;
-  }
+  .lightboxFooter { padding: 96px 20px 32px; }
 
   .lightboxZones button::after,
-  .lightboxZones button::before {
-    display: none;
-  }
+  .lightboxZones button::before { display: none; }
 
-  .lightboxCopy h3 {
-    font-size: clamp(38px, 13vw, 68px);
-  }
+  .lightboxCopy h3 { font-size: clamp(38px, 13vw, 68px); }
 
   .lightboxClose {
     width: 46px;
     height: 46px;
   }
-
 }

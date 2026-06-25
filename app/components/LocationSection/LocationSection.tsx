@@ -9,11 +9,6 @@ const locationFacts = [
 export default function LocationSection() {
   return (
     <section className={styles.section} id="localizacao" data-navbar-theme="light">
-      <div className={styles.backdrop} aria-hidden="true">
-        <span>SP</span>
-        <span>SBMT</span>
-      </div>
-
       <div className={styles.inner}>
         <div className={styles.header}>
           <p className={styles.eyebrow}>Localização</p>

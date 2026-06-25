@@ -7,21 +7,21 @@ const services = [
   {
     id: "fbo",
     title: "FBO",
-    image: "/services/service-fbo.png",
+    image: "/services/service-fbo.webp",
     description:
       "Apoio em solo para chegada, permanência e partida no Campo de Marte, com alinhamento direto entre operador, tripulação e equipe local.",
   },
   {
     id: "hangaragem",
     title: "Hangaragem",
-    image: "/services/service-hangaragem.png",
+    image: "/services/service-hangaragem.webp",
     description:
       "Espaço dedicado para acomodação de aeronaves no Hangar Well Of junto à CASP, com acesso combinado e rotina objetiva.",
   },
   {
     id: "atendimento-executivo",
     title: "Atendimento Executivo",
-    image: "/services/service-atendimento.png",
+    image: "/services/service-atendimento.webp",
     description:
       "Recepção e atendimento direto para passageiros, tripulação e operadores, mantendo a experiência reservada e bem coordenada.",
   },
@@ -84,7 +84,7 @@ export default function ServicosPage() {
 
         <div className={styles.featureImage}>
           <Image
-            src="/services/service-fbo.png"
+            src="/services/service-fbo.webp"
             alt="FBO Well Of no Campo de Marte"
             width={1280}
             height={720}
@@ -112,7 +112,7 @@ export default function ServicosPage() {
         <div className={styles.testimonialPanel}>
           <div className={styles.testimonialImage}>
             <Image
-              src="/services/service-hangaragem.png"
+              src="/services/service-hangaragem.webp"
               alt="Aeronave em hangar executivo"
               width={1280}
               height={720}

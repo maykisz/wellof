@@ -6,21 +6,21 @@ import styles from "./AboutSection.module.css";
 
 const slides = [
   {
-    src: "/about/team-hangar.png",
+    src: "/about/team-hangar.webp",
     alt: "Equipe Well Of ao lado de aeronave em hangar",
     kicker: "Sobre a Well Of",
     title: "Presença no hangar, atendimento direto.",
     copy: "Uma equipe no local para alinhar chegada, permanência e suporte executivo com clareza em cada etapa.",
   },
   {
-    src: "/wellof-hangar-hero.png",
+    src: "/wellof-hangar-hero.webp",
     alt: "Hangar Well Of no Campo de Marte",
     kicker: "Campo de Marte",
     title: "Estrutura objetiva em São Paulo.",
     copy: "Base junto a CASP para operadores, tripulações e passageiros que precisam de acesso simples e organizado.",
   },
   {
-    src: "/about/team-cta.png",
+    src: "/about/team-cta.webp",
     alt: "Recepção no hangar para visita e atendimento",
     kicker: "Próximo passo",
     title: "Conheça o hangar.",
@@ -106,7 +106,7 @@ export default function AboutSection() {
     <section ref={sectionRef} className={styles.section} id="hangar" data-navbar-theme="light">
       <div className={styles.stage}>
         <h2 className={styles.title}>
-          <Image src="/about/texto-sobre-a-agente.png" alt="Sobre a gente" width={3002} height={688} priority />
+          <Image src="/about/texto-sobre-a-agente.webp" alt="Sobre a gente" width={3002} height={688} priority />
         </h2>
 
         <div className={styles.copyRail}>

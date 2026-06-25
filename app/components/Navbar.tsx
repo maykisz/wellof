@@ -65,7 +65,7 @@ export default function Navbar() {
     >
       <a className="brand" href="/">
         <Image
-          src={isLight ? "/logo-preta.png" : "/logo-branca.png"}
+          src={isLight ? "/logo-preta.webp" : "/logo-branca.webp"}
           alt="Well Of"
           width={150}
           height={42}
@@ -120,6 +120,7 @@ export default function Navbar() {
           <a href="/#localizacao" onClick={() => setIsMenuOpen(false)}>
             Localização
           </a>
+
           <a href="/#contato" onClick={() => setIsMenuOpen(false)}>
             Contato
           </a>
@@ -130,6 +131,8 @@ export default function Navbar() {
 
         <div className="menuFooter">
           <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
+          <a href="tel:+5511940895758">(11) 94089-5758</a>
+          <a href="https://wa.me/5511940895758" target="_blank" rel="noreferrer">WhatsApp</a>
           <span>Campo de Marte · CASP</span>
           <span>Well Of Hangar</span>
         </div>

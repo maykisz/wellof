@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ScrollToTopOnReload from "./components/ScrollToTopOnReload";
 import "./globals.css";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wellof.com.br"),
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: "Well Of Hangar | Campo de Marte",
     description:
       "Hangaragem, FBO e atendimento executivo no Campo de Marte, em São Paulo.",
-    images: ["/hero/wellof-hero-hangar-night.png"],
+    images: ["/hero/wellof-hero-hangar-night.webp"],
   },
 };
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body>
         <ScrollToTopOnReload />
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );

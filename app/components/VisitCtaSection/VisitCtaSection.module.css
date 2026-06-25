@@ -48,7 +48,7 @@
 .revealColumns span {
   position: relative;
   overflow: hidden;
-  background-image: url("/visit-cta/hangar-dawn.png");
+  background-image: url("/visit-cta/hangar-dawn.webp");
   background-size: 1000% 100%;
   background-position: var(--column-x) center;
   background-repeat: no-repeat;

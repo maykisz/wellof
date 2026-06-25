@@ -38,23 +38,6 @@
     inset 0 0 0 156px rgba(10, 10, 10, 0.035);
 }
 
-.backdrop {
-  position: absolute;
-  inset: clamp(56px, 6vw, 86px) 0 auto;
-  z-index: -1;
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 max(22px, calc((100vw - 1360px) / 2));
-  color: rgba(10, 10, 10, 0.045);
-  font-family: var(--font-expanded);
-  font-size: clamp(64px, 12vw, 176px);
-  font-weight: 700;
-  line-height: 0.76;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
 .inner {
   display: grid;
   gap: clamp(30px, 3.4vw, 48px);
@@ -384,12 +367,6 @@
 @media (max-width: 720px) {
   .section {
     padding: 76px 18px 82px;
-  }
-
-  .backdrop {
-    inset: 78px 0 auto;
-    padding: 0 18px;
-    font-size: clamp(70px, 26vw, 124px);
   }
 
   .header {

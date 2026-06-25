@@ -6,13 +6,15 @@ export default function HeroSection() {
       <div className={styles.slider} aria-hidden="true">
         <video
           className={styles.heroVideo}
-          src="/video-hero.mp4"
+          poster="/video-hero.poster.jpg"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
-        />
+        >
+          <source src="/video-hero.opt.mp4" type="video/mp4" />
+        </video>
       </div>
       <div className={styles.overlay} aria-hidden="true" />
 
@@ -21,11 +23,10 @@ export default function HeroSection() {
 
         <div className={styles.bottom}>
           <div className={styles.copy}>
-            <p>Campo de Marte, São Paulo.</p>
+            <p>Base no Campo de Marte — suporte operacional, agendamento coordenado e embarque discreto.</p>
             <div className={styles.actions}>
-              <a className={styles.cta} href="/#contato">
-                Solicitar atendimento
-              </a>
+              <a className={styles.cta} href="mailto:contato@wellof.com.br?subject=Agendar%20visita%20Well%20Of" aria-label="Agendar visita">Agendar visita</a>
+              <a className={styles.secondaryCta} href="https://wa.me/5511940895758" target="_blank" rel="noreferrer" aria-label="Solicitar cotação pelo WhatsApp">WhatsApp</a>
             </div>
           </div>
         </div>

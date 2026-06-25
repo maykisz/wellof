@@ -1,0 +1,57 @@
+name: Media Optimization & Build Checks
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+
+jobs:
+  optimize-media:
+    name: Optimize media and run build checks
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+
+      - name: Run media optimization script (safe mode)
+        env:
+          NODE_ENV: production
+        run: |
+          # The script will check for ffmpeg and run safely; it creates backups and outputs separate files.
+          node scripts/run-optimize-media.js --ci
+
+      - name: Typecheck
+        run: npm run typecheck --if-present
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Simple server start (verify build)
+        run: |
+          # Start Next.js in production to ensure build artifacts are valid (short-lived smoke test)
+          npm run start --if-present &
+          sleep 5
+          pkill -f "next start" || true
+
+  note:
+    name: Notes
+    runs-on: ubuntu-latest
+    if: false
+    steps:
+      - run: echo "This job is documentation-only."

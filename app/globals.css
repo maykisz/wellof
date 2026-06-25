@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Thin.ttf") format("truetype");
+  src: url("/fonts/Britanica Thin.woff2") format("woff2");
   font-style: normal;
   font-weight: 100;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Light.ttf") format("truetype");
+  src: url("/fonts/Britanica Light.woff2") format("woff2");
   font-style: normal;
   font-weight: 300;
   font-display: swap;
@@ -26,7 +26,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Regular.ttf") format("truetype");
+  src: url("/fonts/Britanica Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Bold.ttf") format("truetype");
+  src: url("/fonts/Britanica Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
   font-display: swap;
@@ -42,7 +42,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Extra Bold.ttf") format("truetype");
+  src: url("/fonts/Britanica Extra Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 800;
   font-display: swap;
@@ -50,7 +50,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Black.ttf") format("truetype");
+  src: url("/fonts/Britanica Black.woff2") format("woff2");
   font-style: normal;
   font-weight: 900;
   font-display: swap;
@@ -58,7 +58,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Regular Italic.ttf") format("truetype");
+  src: url("/fonts/Britanica Regular Italic.woff2") format("woff2");
   font-style: italic;
   font-weight: 400;
   font-display: swap;
@@ -66,7 +66,7 @@
 
 @font-face {
   font-family: "Britanica";
-  src: url("/fonts/Britanica Bold Italic.ttf") format("truetype");
+  src: url("/fonts/Britanica Bold Italic.woff2") format("woff2");
   font-style: italic;
   font-weight: 700;
   font-display: swap;
@@ -74,7 +74,7 @@
 
 @font-face {
   font-family: "Britanica Condensed";
-  src: url("/fonts/Britanica Condensed Regular.ttf") format("truetype");
+  src: url("/fonts/Britanica Condensed Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -82,7 +82,7 @@
 
 @font-face {
   font-family: "Britanica Condensed";
-  src: url("/fonts/Britanica Condensed Bold.ttf") format("truetype");
+  src: url("/fonts/Britanica Condensed Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
   font-display: swap;
@@ -90,7 +90,7 @@
 
 @font-face {
   font-family: "Britanica Expanded";
-  src: url("/fonts/Britanica Expanded Regular.ttf") format("truetype");
+  src: url("/fonts/Britanica Expanded Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -98,7 +98,7 @@
 
 @font-face {
   font-family: "Britanica Expanded";
-  src: url("/fonts/Britanica Expanded Bold.ttf") format("truetype");
+  src: url("/fonts/Britanica Expanded Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
   font-display: swap;
@@ -208,6 +208,12 @@ button {
   transform: translateZ(0) scale(1.01);
   transform-origin: center;
   will-change: transform, opacity;
+}
+
+/* When introFallback is active, hide the WebGL canvas to use video/poster fallback */
+body.introFallback .introCanvas {
+  display: none !important;
+  visibility: hidden !important;
 }
 
 .introSkipButton {
@@ -396,6 +402,28 @@ button {
 .topbarDark .menuButton {
   background: #050505;
   border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+/* Intro fallback styles: show lightweight video/poster and hide WebGL canvas on small/slow devices */
+body.introFallback .introVideoSource {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 1;
+  pointer-events: auto;
+  object-fit: cover;
+  z-index: 1001;
+}
+
+body.introFallback .introCanvas {
+  display: none;
+}
+
+/* Ensure skip/controls area remains accessible if needed */
+body.introFallback .introSkipButton {
+  display: none;
 }
 
 .topbarHero .menuButton {

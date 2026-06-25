@@ -5,11 +5,11 @@ import { type CSSProperties, useEffect, useRef, useState } from "react";
 import styles from "./SiteFooter.module.css";
 
 const gallery = [
-  { src: "/footer/wellof-footer-hangar.png", alt: "Aeronave no hangar Well Of" },
-  { src: "/about/team-hangar.png", alt: "Equipe Well Of no hangar" },
-  { src: "/about/team-inspection.png", alt: "Atendimento junto a aeronave no hangar" },
-  { src: "/about/team-access.png", alt: "Recepção de cliente no hangar" },
-  { src: "/services/jet-wing-glass.png", alt: "Aeronave dentro do hangar" },
+  { src: "/footer/wellof-footer-hangar.webp", alt: "Aeronave no hangar Well Of" },
+  { src: "/about/team-hangar.webp", alt: "Equipe Well Of no hangar" },
+  { src: "/about/team-inspection.webp", alt: "Atendimento junto a aeronave no hangar" },
+  { src: "/about/team-access.webp", alt: "Recepção de cliente no hangar" },
+  { src: "/services/jet-wing-glass.webp", alt: "Aeronave dentro do hangar" },
 ];
 
 function clamp(value: number, min: number, max: number) {
@@ -100,13 +100,15 @@ export default function SiteFooter() {
           <video
             ref={videoRef}
             className={styles.footerVideo}
-            src="/footer/video-fundo.mp4"
             muted
             loop
             playsInline
             preload="metadata"
+            poster="/footer/video-fundo.poster.jpg"
             aria-label="Vídeo do hangar Well Of"
-          />
+          >
+            <source src="/footer/video-fundo.opt.mp4" type="video/mp4" />
+          </video>
           <div className={styles.imageShade} />
           <nav className={styles.topNav} aria-label="Links do rodapé">
             <a href="/#hangar">Hangar</a>
@@ -117,7 +119,7 @@ export default function SiteFooter() {
 
         <Image
           className={`${styles.bigLogo} ${styles.bigLogoDark}`}
-          src="/logo-branca.png"
+          src="/logo-branca.webp"
           alt="Well Of"
           width={900}
           height={252}
@@ -127,7 +129,7 @@ export default function SiteFooter() {
         <div className={styles.blackPanel}>
           <Image
             className={`${styles.bigLogo} ${styles.bigLogoLight}`}
-            src="/logo-preta.png"
+            src="/logo-preta.webp"
             alt=""
             width={900}
             height={252}
@@ -136,6 +138,7 @@ export default function SiteFooter() {
 
           <div className={styles.footerBar}>
             <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
+            <a href="tel:+5511940895758">(11) 94089-5758</a>
             <nav aria-label="Links principais do rodapé">
               <a href="/#hangar">Hangar</a>
               <a href="/servicos">Serviços</a>
