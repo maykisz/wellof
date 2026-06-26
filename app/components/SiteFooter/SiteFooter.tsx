@@ -113,6 +113,7 @@ export default function SiteFooter() {
           <nav className={styles.topNav} aria-label="Links do rodapé">
             <a href="/#hangar">Hangar</a>
             <a href="/servicos">Serviços</a>
+            <a href="/#galeria">Galeria</a>
             <a href="/#localizacao">Localização</a>
           </nav>
         </div>
@@ -142,6 +143,7 @@ export default function SiteFooter() {
             <nav aria-label="Links principais do rodapé">
               <a href="/#hangar">Hangar</a>
               <a href="/servicos">Serviços</a>
+              <a href="/#galeria">Galeria</a>
               <a href="/#contato">Contato</a>
             </nav>
             <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">

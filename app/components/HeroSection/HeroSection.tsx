@@ -23,10 +23,10 @@ export default function HeroSection() {
 
         <div className={styles.bottom}>
           <div className={styles.copy}>
-            <p>Base no Campo de Marte — suporte operacional, agendamento coordenado e embarque discreto.</p>
+            <p>Hangaragem, FBO e atendimento executivo no Campo de Marte.</p>
             <div className={styles.actions}>
-              <a className={styles.cta} href="mailto:contato@wellof.com.br?subject=Agendar%20visita%20Well%20Of" aria-label="Agendar visita">Agendar visita</a>
-              <a className={styles.secondaryCta} href="https://wa.me/5511940895758" target="_blank" rel="noreferrer" aria-label="Solicitar cotação pelo WhatsApp">WhatsApp</a>
+              <a className={styles.cta} href="https://wa.me/5511940895758?text=Ol%C3%A1%2C%20gostaria%20de%20consultar%20disponibilidade%20de%20hangaragem%20na%20Well%20Of." target="_blank" rel="noreferrer" aria-label="Consultar disponibilidade pelo WhatsApp">Consultar disponibilidade</a>
+              <a className={styles.secondaryCta} href="mailto:contato@wellof.com.br?subject=Proposta%20de%20hangaragem%20Well%20Of" aria-label="Solicitar proposta por e-mail">Solicitar proposta</a>
             </div>
           </div>
         </div>

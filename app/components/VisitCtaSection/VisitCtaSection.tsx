@@ -28,8 +28,8 @@ export default function VisitCtaSection() {
 
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const nextPinned = rect.top <= 0 && rect.bottom >= viewportHeight * 0.12;
-      const nextProgress = nextPinned ? clamp(-rect.top / (viewportHeight * 0.82), 0, 1) : 0;
+      const nextPinned = rect.top <= 0 && rect.bottom >= viewportHeight;
+      const nextProgress = nextPinned ? clamp(-rect.top / (viewportHeight * 0.92), 0, 1) : 0;
 
       setIsPinned(nextPinned);
       setRevealProgress(nextProgress);
@@ -79,17 +79,17 @@ export default function VisitCtaSection() {
 
         <div className={styles.content}>
           <p className={styles.eyebrow}>Base no Campo de Marte</p>
-          <h2 id="visit-cta-title">Conheca a estrutura de perto.</h2>
+          <h2 id="visit-cta-title">Consulte a disponibilidade do hangar.</h2>
           <p className={styles.copy}>
-            Agende uma visita a nossa base e veja como atendimento, hangaragem e apoio operacional acontecem antes do embarque.
+            Fale com a equipe para alinhar aeronave, período, operação em solo e condições de atendimento na base Well Of.
           </p>
 
           <div className={styles.actions}>
-            <a className={styles.primary} href="mailto:contato@wellof.com.br?subject=Agendar%20visita%20Well%20Of">
-              Agendar visita
+            <a className={styles.primary} href="https://wa.me/5511940895758?text=Ol%C3%A1%2C%20gostaria%20de%20consultar%20disponibilidade%20do%20hangar%20Well%20Of." target="_blank" rel="noreferrer">
+              Consultar disponibilidade
             </a>
-            <a className={styles.secondary} href="#contato">
-              Falar com atendimento
+            <a className={styles.secondary} href="mailto:contato@wellof.com.br?subject=Proposta%20Well%20Of%20Hangar">
+              Solicitar proposta
             </a>
           </div>
         </div>

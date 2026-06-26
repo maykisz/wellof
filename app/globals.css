@@ -151,6 +151,51 @@ button {
   font: inherit;
 }
 
+.whatsappButton {
+  position: fixed;
+  z-index: 45;
+  right: clamp(16px, 2.4vw, 30px);
+  bottom: clamp(16px, 2.4vw, 30px);
+  pointer-events: none;
+}
+
+.whatsappButton a {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.72);
+  color: #ffffff;
+  font-size: 0;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(14px);
+  pointer-events: auto;
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.whatsappButton a::before {
+  content: "W";
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.whatsappButton a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.62);
+  background: rgba(5, 5, 5, 0.9);
+}
+
+.whatsappButton a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
 .pageShell {
   min-height: 100vh;
   background: var(--black);
@@ -333,7 +378,7 @@ body.introFallback .introCanvas {
 
 .navLinks {
   display: flex;
-  gap: clamp(22px, 3.7vw, 62px);
+  gap: clamp(18px, 3vw, 48px);
   align-items: center;
   justify-content: center;
   font-size: 14px;
@@ -501,12 +546,12 @@ body.introFallback .introSkipButton {
   align-self: center;
   justify-self: center;
   display: grid;
-  gap: clamp(22px, 4vh, 38px);
+  gap: clamp(18px, 3.2vh, 34px);
   text-align: center;
 }
 
 .menuPanel a {
-  font-size: clamp(46px, 4.7vw, 74px);
+  font-size: clamp(42px, 4.4vw, 70px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0;
@@ -555,6 +600,16 @@ body.introFallback .introSkipButton {
 
   .contactButton {
     display: none;
+  }
+
+  .whatsappButton {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .whatsappButton a {
+    width: 48px;
+    height: 48px;
   }
 
   .menuButton {

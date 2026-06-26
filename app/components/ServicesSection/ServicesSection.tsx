@@ -11,7 +11,7 @@ const services = [
     title: "FBO",
     eyebrow: "Chegada, permanência e partida",
     detail:
-      "Coordenação completa da operação em solo para aeronaves executivas, incluindo apoio à chegada, recepção de passageiros, suporte à tripulação e organização da partida com agilidade, discrição e padrão Well Of.",
+      "Coordenação completa da operação em solo para aeronaves executivas, incluindo chegada, recepção de passageiros, suporte à tripulação e partida com agilidade, discrição e padrão Well Of.",
     image: "/services/service-fbo.webp",
   },
   {
@@ -19,7 +19,7 @@ const services = [
     title: "Hangaragem",
     eyebrow: "Estrutura executiva",
     detail:
-      "Acomodação de aeronaves no Hangar Well Of junto à CASP, em uma estrutura pensada para proteger o equipamento, facilitar a rotina operacional e centralizar o atendimento de proprietários, operadores e tripulações.",
+      "Acomodação de aeronaves no Hangar Well Of junto à CASP, com rotina pensada para proteger o equipamento, facilitar a operação e centralizar o atendimento de proprietários, operadores e tripulações.",
     image: "/services/service-hangaragem.webp",
   },
   {
@@ -27,7 +27,7 @@ const services = [
     title: "Atendimento Executivo",
     eyebrow: "Recepção personalizada",
     detail:
-      "Experiência de atendimento voltada a passageiros e tripulações que buscam conforto, privacidade e eficiência, com recepção discreta, suporte próximo e cuidado em cada etapa da jornada no hangar.",
+      "Atendimento voltado a passageiros e tripulações que buscam conforto, privacidade e eficiência, com recepção discreta, suporte próximo e cuidado em cada etapa da jornada no hangar.",
     image: "/services/service-atendimento.webp",
   },
 ];
@@ -141,7 +141,7 @@ export default function ServicesSection() {
             <div className={styles.controls}>
               <div className={styles.navRow}>
                 <button type="button" className={styles.navButton} onClick={prev}>
-                  Prev
+                  Anterior
                 </button>
 
                 <div className={styles.progressLine}>
@@ -153,12 +153,12 @@ export default function ServicesSection() {
                 </div>
 
                 <button type="button" className={styles.navButton} onClick={next}>
-                  Next
+                  Próximo
                 </button>
               </div>
 
               <a className={styles.detailCta} href={`/servicos#${current.slug}`}>
-                Conheça mais
+                Ver serviço
               </a>
             </div>
           </div>

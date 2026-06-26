@@ -25,7 +25,7 @@ export default function LocationSection() {
               <iframe
                 className={styles.map}
                 title="Mapa do Campo de Marte"
-                src="https://www.google.com/maps?q=Casp%20WellOf%20Hangar%20Executivo%20Campo%20de%20Marte%20SP%20Av.%20Olavo%20Fontoura%201078%20Santana%20S%C3%A3o%20Paulo%20SP%2002012-021&output=embed"
+                src="https://www.google.com/maps?q=Casp%20Well%20Of%20Hangar%20Executivo%20Campo%20de%20Marte%20SP%20Av.%20Olavo%20Fontoura%201078%20Santana%20S%C3%A3o%20Paulo%20SP%2002012-021&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -56,7 +56,7 @@ export default function LocationSection() {
 
             <address className={styles.address}>
               <span>Endereço</span>
-              Casp WellOf Hangar Executivo | Campo de Marte - SP
+              CASP Well Of Hangar Executivo | Campo de Marte - SP
               <br />
               Av. Olavo Fontoura, 1078 - Santana
               <br />
@@ -65,7 +65,7 @@ export default function LocationSection() {
 
             <div className={styles.actions}>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Casp%20WellOf%20Hangar%20Executivo%20Campo%20de%20Marte%20SP%20Av.%20Olavo%20Fontoura%201078%20Santana%20S%C3%A3o%20Paulo%20SP%2002012-021"
+                href="https://www.google.com/maps/search/?api=1&query=Casp%20Well%20Of%20Hangar%20Executivo%20Campo%20de%20Marte%20SP%20Av.%20Olavo%20Fontoura%201078%20Santana%20S%C3%A3o%20Paulo%20SP%2002012-021"
                 target="_blank"
                 rel="noreferrer"
               >

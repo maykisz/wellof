@@ -109,7 +109,7 @@ export default function AboutSection() {
     <section ref={sectionRef} className={styles.section} id="hangar" data-navbar-theme="light">
       <div className={styles.stage}>
         <h2 className={styles.title}>
-          Sobre a WellOf
+          Sobre a Well Of
         </h2>
 
         <div className={styles.copyRail}>

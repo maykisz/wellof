@@ -2,7 +2,7 @@
 
 export default function WhatsAppButton() {
   return (
-    <div className="whatsappButton" aria-hidden="false">
+    <div className="whatsappButton">
       <a
         href="https://wa.me/5511940895758"
         target="_blank"
