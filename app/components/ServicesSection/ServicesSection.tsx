@@ -9,62 +9,56 @@ const services = [
   {
     slug: "fbo",
     title: "FBO",
-    eyebrow: "Chegada e partida",
+    eyebrow: "Chegada, permanência e partida",
     detail:
-      "Coordenação direta para passageiros, tripulação e operadores antes da aeronave chegar ao hangar.",
+      "Coordenação completa da operação em solo para aeronaves executivas, incluindo apoio à chegada, recepção de passageiros, suporte à tripulação e organização da partida com agilidade, discrição e padrão Well Of.",
     image: "/services/service-fbo.webp",
-    cta: "Explorar FBO",
   },
   {
     slug: "hangaragem",
     title: "Hangaragem",
-    eyebrow: "Estrutura no Campo",
+    eyebrow: "Estrutura executiva",
     detail:
-      "Espaço dedicado para acomodação de aeronaves no Hangar Well Of junto à CASP, com operação organizada, proteção da aeronave e atendimento centralizado.",
+      "Acomodação de aeronaves no Hangar Well Of junto à CASP, em uma estrutura pensada para proteger o equipamento, facilitar a rotina operacional e centralizar o atendimento de proprietários, operadores e tripulações.",
     image: "/services/service-hangaragem.webp",
-    cta: "Explorar hangaragem",
   },
   {
     slug: "atendimento-executivo",
     title: "Atendimento Executivo",
-    eyebrow: "Experiência reservada",
+    eyebrow: "Recepção personalizada",
     detail:
-      "Recepção e atendimento direto para passageiros, tripulação e operadores, com discrição, conforto e agilidade em cada etapa.",
+      "Experiência de atendimento voltada a passageiros e tripulações que buscam conforto, privacidade e eficiência, com recepção discreta, suporte próximo e cuidado em cada etapa da jornada no hangar.",
     image: "/services/service-atendimento.webp",
-    cta: "Explorar atendimento",
   },
 ];
 
-const INTERVAL = 4800;
+const SLIDE_INTERVAL = 5200;
 
 export default function ServicesSection() {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [fillKey, setFillKey] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [progressKey, setProgressKey] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const goTo = (index: number) => {
     setActive(index);
-    setFillKey((k) => k + 1);
+    setProgressKey((key) => key + 1);
   };
 
   const prev = () => goTo((active + services.length - 1) % services.length);
   const next = () => goTo((active + 1) % services.length);
 
   useEffect(() => {
-    if (paused) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
 
-    if (timerRef.current) clearInterval(timerRef.current);
-
-    timerRef.current = setInterval(() => {
+    timerRef.current = setTimeout(() => {
       setActive((current) => (current + 1) % services.length);
-      setFillKey((k) => k + 1);
-    }, INTERVAL);
+      setProgressKey((key) => key + 1);
+    }, SLIDE_INTERVAL);
 
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [paused]);
+  }, [progressKey]);
 
   const current = services[active];
   const second = services[(active + 1) % services.length];
@@ -75,90 +69,72 @@ export default function ServicesSection() {
       className={styles.section}
       id="servicos"
       data-navbar-theme="light"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
       <div className={styles.inner}>
         <div className={styles.top}>
           <div className={styles.headingBlock}>
-            <span className={styles.kicker}>Serviços Well Of</span>
-
             <h2 className={styles.title}>
-              Rumo a uma operação,
-              <span> executiva mais fluida.</span>
+              Serviços executivos
+              <span>com padrão Well Of.</span>
             </h2>
           </div>
 
-          <div className={styles.topCopy}>
+          <div className={styles.serviceIntro}>
+            <span>{current.eyebrow}</span>
+            <h3>{current.title}</h3>
             <p>
-              Na Well Of, cada etapa do atendimento foi pensada para tornar a
-              operação mais clara, discreta e eficiente. Da chegada ao hangar ao
-              suporte em solo, conectamos estrutura, equipe e atenção aos
-              detalhes para simplificar sua rotina executiva.
+              {current.detail}
             </p>
           </div>
         </div>
 
-        <div className={styles.gallery}>
+        <div className={styles.showcase} aria-label="Serviços Well Of">
           <button
             type="button"
-            className={`${styles.card} ${styles.cardLarge}`}
+            className={`${styles.imageButton} ${styles.mainImage}`}
             onClick={next}
             aria-label={`Ver ${current.title}`}
           >
             <Image
+              key={current.slug}
               src={current.image}
               alt={current.title}
               fill
               priority
-              sizes="(max-width: 900px) 100vw, 52vw"
+              sizes="(max-width: 760px) 100vw, 54vw"
             />
-            <span className={styles.overlay} />
-            <div className={styles.cardInfo}>
-              <small>{current.eyebrow}</small>
-              <strong>{current.title}</strong>
-              <p>{current.detail}</p>
-            </div>
           </button>
 
-          <div className={styles.side}>
-            <div className={styles.sideGrid}>
+          <div className={styles.sidePanel}>
+            <div className={styles.sideImages}>
               <button
                 type="button"
-                className={styles.card}
+                className={styles.imageButton}
                 onClick={() => goTo((active + 1) % services.length)}
                 aria-label={`Ver ${second.title}`}
               >
                 <Image
+                  key={second.slug}
                   src={second.image}
                   alt={second.title}
                   fill
-                  sizes="(max-width: 900px) 50vw, 22vw"
+                  sizes="(max-width: 760px) 50vw, 20vw"
                 />
-                <span className={styles.overlay} />
-                <div className={styles.cardMiniInfo}>
-                  <small>{second.eyebrow}</small>
-                  <strong>{second.title}</strong>
-                </div>
               </button>
 
               <button
                 type="button"
-                className={styles.card}
+                className={styles.imageButton}
                 onClick={() => goTo((active + 2) % services.length)}
                 aria-label={`Ver ${third.title}`}
               >
                 <Image
+                  key={third.slug}
                   src={third.image}
                   alt={third.title}
                   fill
-                  sizes="(max-width: 900px) 50vw, 22vw"
+                  sizes="(max-width: 760px) 50vw, 20vw"
                 />
-                <span className={styles.overlay} />
-                <div className={styles.cardMiniInfo}>
-                  <small>{third.eyebrow}</small>
-                  <strong>{third.title}</strong>
-                </div>
               </button>
             </div>
 
@@ -170,9 +146,9 @@ export default function ServicesSection() {
 
                 <div className={styles.progressLine}>
                   <span
-                    key={fillKey}
+                    key={progressKey}
                     className={styles.progressFill}
-                    style={{ "--duration": `${INTERVAL}ms` } as CSSProperties}
+                    style={{ "--duration": `${SLIDE_INTERVAL}ms` } as CSSProperties}
                   />
                 </div>
 
@@ -182,7 +158,7 @@ export default function ServicesSection() {
               </div>
 
               <a className={styles.detailCta} href={`/servicos#${current.slug}`}>
-                {current.cta}
+                Conheça mais
               </a>
             </div>
           </div>

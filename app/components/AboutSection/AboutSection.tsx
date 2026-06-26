@@ -7,24 +7,27 @@ import styles from "./AboutSection.module.css";
 const slides = [
   {
     src: "/about/team-hangar.webp",
-    alt: "Equipe Well Of ao lado de aeronave em hangar",
+    alt: "Equipe Well Of alinhando operação ao lado de aeronave executiva no hangar",
     kicker: "Sobre a Well Of",
-    title: "Presença no hangar, atendimento direto.",
-    copy: "Uma equipe no local para alinhar chegada, permanência e suporte executivo com clareza em cada etapa.",
+    title: "Base executiva no Campo de Marte.",
+    copy:
+      "A Well Of reúne estrutura, equipe e operação em solo para oferecer uma experiência mais simples, reservada e organizada para proprietários, operadores, passageiros e tripulações.",
   },
   {
     src: "/wellof-hangar-hero.webp",
-    alt: "Hangar Well Of no Campo de Marte",
-    kicker: "Campo de Marte",
-    title: "Estrutura objetiva em São Paulo.",
-    copy: "Base junto a CASP para operadores, tripulações e passageiros que precisam de acesso simples e organizado.",
+    alt: "Hangar Well Of no Campo de Marte com aeronave executiva",
+    kicker: "Estrutura dedicada",
+    title: "Um hangar pensado para a rotina da aviação executiva.",
+    copy:
+      "Localizada junto à CASP, nossa base oferece suporte direto para chegada, permanência, hangaragem e partida, com atendimento próximo e operação centralizada.",
   },
   {
     src: "/about/team-cta.webp",
-    alt: "Recepção no hangar para visita e atendimento",
-    kicker: "Próximo passo",
-    title: "Conheça o hangar.",
-    copy: "Agende uma conversa para ver o espaço e alinhar as condições diretamente com a equipe.",
+    alt: "Atendimento reservado para visita ao hangar Well Of",
+    kicker: "Visita e atendimento",
+    title: "Conheça o hangar Well Of.",
+    copy:
+      "Agende uma conversa para visitar a estrutura, entender as possibilidades de operação e alinhar as condições diretamente com a nossa equipe.",
     cta: "Falar com a Well Of",
   },
 ];
@@ -106,7 +109,7 @@ export default function AboutSection() {
     <section ref={sectionRef} className={styles.section} id="hangar" data-navbar-theme="light">
       <div className={styles.stage}>
         <h2 className={styles.title}>
-          <Image src="/about/texto-sobre-a-agente.webp" alt="Sobre a gente" width={3002} height={688} priority />
+          Sobre a WellOf
         </h2>
 
         <div className={styles.copyRail}>

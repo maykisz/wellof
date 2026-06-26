@@ -19,9 +19,9 @@
 .title {
   position: absolute;
   z-index: 1;
-  top: max(calc(var(--nav-height) - 120px), -24px);
+  top: max(calc(var(--nav-height) - 70px), -15px);
   left: 3vw;
-  width: 98vw;
+  font-size: clamp(280px, 5vw, 100px);
   margin: 0;
   opacity: 0.24;
   pointer-events: none;
@@ -86,7 +86,7 @@
   z-index: 4;
   left: clamp(24px, 7vw, 120px);
   right: auto;
-  bottom: clamp(96px, 17vh, 190px);
+  bottom: clamp(250px, 22vh, 250px);
   width: min(36vw, 520px);
   min-height: 170px;
   pointer-events: none;
