@@ -84,9 +84,6 @@ export default function Navbar() {
         <a href="/#confianca" tabIndex={isHero ? -1 : undefined}>
           Segurança
         </a>
-        <a href="/#galeria" tabIndex={isHero ? -1 : undefined}>
-          Galeria
-        </a>
         <a href="/#localizacao" tabIndex={isHero ? -1 : undefined}>
           Localização
         </a>
@@ -119,9 +116,6 @@ export default function Navbar() {
           </a>
           <a href="/#confianca" onClick={() => setIsMenuOpen(false)}>
             Segurança
-          </a>
-          <a href="/#galeria" onClick={() => setIsMenuOpen(false)}>
-            Galeria
           </a>
           <a href="/#localizacao" onClick={() => setIsMenuOpen(false)}>
             Localização

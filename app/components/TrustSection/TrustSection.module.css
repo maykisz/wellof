@@ -1,6 +1,11 @@
 .section {
   position: relative;
+  /* FIX — era z-index: 6, subia a Trust acima do introScene fixed (z-index: 4)
+     causando o flash de fundo cinza antes da animação terminar.
+     z-index: 2 mantém a Trust abaixo do fixed durante o scroll da Services,
+     e ela sobe naturalmente quando o fixed some (data-scene-pinned → false). */
   z-index: 2;
+  /* FIX — margin-top: 0svh removido, não tinha efeito útil */
   min-height: 100vh;
   padding: clamp(92px, 11vw, 170px) clamp(24px, 8vw, 140px);
   display: grid;
@@ -19,9 +24,10 @@
 
 .eyebrow {
   margin: 0;
-  font-size: 13px;
+  color: rgba(244, 244, 244, 0.38);
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -42,30 +48,41 @@
   width: min(100%, 1120px);
   justify-self: center;
   display: grid;
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .step {
   display: grid;
   grid-template-columns: 88px 1fr;
+  align-items: baseline;
   gap: 24px;
   padding: 24px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 240ms ease;
+}
+
+.step:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.22);
 }
 
 .step span {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 13px;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding-top: 0.22em;
+  user-select: none;
 }
 
 .step p {
   max-width: 860px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.82);
   font-size: clamp(22px, 2vw, 36px);
+  font-weight: 400;
   line-height: 1.08;
+  letter-spacing: -0.01em;
 }
 
 @media (max-width: 1280px) and (min-width: 901px) {
@@ -120,5 +137,22 @@
   .step {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 72px 18px;
+    gap: 40px;
+  }
+
+  .step p {
+    font-size: clamp(18px, 5.5vw, 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    transition: none;
   }
 }

@@ -12,6 +12,9 @@ export default function ContactSection() {
           <a className={styles.primaryButton} href="https://wa.me/5511940895758?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20a%20Well%20Of%20sobre%20hangaragem%20e%20FBO." target="_blank" rel="noreferrer">
             Falar no WhatsApp
           </a>
+          <a className={styles.supportButton} href="https://wa.me/5511940895758?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20e%20gostaria%20de%20falar%20com%20o%20suporte%20da%20Well%20Of." target="_blank" rel="noreferrer">
+            Suporte para dúvidas
+          </a>
           <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
           <a href="tel:+5511940895758">(11) 94089-5758</a>
           <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">
