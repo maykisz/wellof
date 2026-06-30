@@ -1253,16 +1253,147 @@
 
 @media (max-width: 640px) {
   .section {
-    height: 340svh;
+    height: auto;
+    min-height: 0;
+    padding: 86px 18px 72px;
+  }
+
+  .inner {
+    height: auto;
+    min-height: 0;
+  }
+
+  .introScene {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    display: grid;
+    gap: 28px;
+    place-items: stretch;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    background: transparent;
+  }
+
+  .introScene::before {
+    display: none;
   }
 
   .introCopy {
-    top: 50%;
-    padding: 0 18px;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    padding: 0;
+    justify-items: start;
+    text-align: left;
+    opacity: 1;
+    transform: none;
+  }
+
+  .introCopy > span {
+    opacity: 1;
+  }
+
+  .introHeadline {
+    font-size: clamp(42px, 12.6vw, 58px);
+    line-height: 0.98;
+  }
+
+  .splitLine {
+    display: grid;
+    gap: 0;
+    white-space: normal;
+  }
+
+  .splitLeft,
+  .splitRight {
+    opacity: 1;
+    transform: none;
   }
 
   .feedbackCard {
-    width: var(--card-width, 132px);
+    display: none;
+  }
+
+  .featureReveal {
+    position: relative;
+    left: auto;
+    top: auto;
+    inset: auto;
+    width: 100%;
+    height: min(680px, 142vw);
+    min-height: 520px;
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.16);
+  }
+
+  .featureReveal::after {
+    opacity: 0.86;
+  }
+
+  .featureReveal::before,
+  .featureHoverCursor,
+  .panelSweep {
+    display: none;
+  }
+
+  .featureReveal img {
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1.04);
+    filter: brightness(0.76) saturate(0.94) contrast(1.02);
+  }
+
+  .featureServiceCaption {
+    left: 18px;
+    right: 18px;
+    bottom: 24px;
+    top: auto;
+    width: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .featureServiceCaption h3 {
+    font-size: clamp(34px, 10vw, 48px);
+  }
+
+  .featureServiceCaption p {
+    max-width: 33ch;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .featureThumbs {
+    right: 18px;
+    bottom: 156px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .featureProgress {
+    display: none;
+  }
+
+  .featureSideLabel,
+  .featureServiceTitle,
+  .word,
+  .showcase {
+    display: none !important;
+  }
+
+  .featureThumb {
+    width: 50px;
+  }
+
+  .section[data-scene-pinned="true"] .introScene {
+    position: relative;
   }
 
   .cardOne {
@@ -1406,6 +1537,33 @@
 
   .detailCta {
     font-size: 16px;
+  }
+
+  .featureReveal {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: min(680px, 142vw);
+    min-height: 520px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .featureServiceCaption {
+    top: auto;
+    bottom: 24px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .featureThumbs {
+    bottom: 156px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .featureReveal img {
+    transform: scale(1.04);
   }
 }
 

@@ -1,9 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 
 type NavbarTheme = "hero" | "light" | "dark";
+
+const menuLinks = [
+  { label: "Hangar", href: "/#hangar" },
+  { label: "Servi\u00e7os", href: "/servicos" },
+  { label: "Seguran\u00e7a", href: "/#confianca" },
+  { label: "Localiza\u00e7\u00e3o", href: "/#localizacao" },
+  { label: "Contato", href: "/#contato" },
+  { label: "Instagram", href: "https://www.instagram.com/wellof.hangar/", external: true },
+];
 
 function getActiveTheme(): NavbarTheme {
   const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-navbar-theme]"));
@@ -21,6 +31,18 @@ function getActiveTheme(): NavbarTheme {
   }
 
   return "dark";
+}
+
+function renderAnimatedLabel(label: string) {
+  return Array.from(label).map((character, index) => (
+    <span
+      aria-hidden="true"
+      key={`${character}-${index}`}
+      style={{ "--letter-index": index } as CSSProperties}
+    >
+      {character}
+    </span>
+  ));
 }
 
 export default function Navbar() {
@@ -61,7 +83,7 @@ export default function Navbar() {
         isHero ? "topbarHero" : isLight ? "topbarLight" : "topbarDark",
         isMenuOpen ? "topbarMenuOpen" : "",
       ].join(" ")}
-      aria-label="Navegação principal"
+      aria-label="Navegacao principal"
     >
       <a className="brand" href="/">
         <Image
@@ -74,18 +96,18 @@ export default function Navbar() {
         />
       </a>
 
-      <nav className="navLinks" aria-label="Páginas" aria-hidden={isHero}>
+      <nav className="navLinks" aria-label="Paginas" aria-hidden={isHero}>
         <a href="/#hangar" tabIndex={isHero ? -1 : undefined}>
           Hangar
         </a>
         <a href="/servicos" tabIndex={isHero ? -1 : undefined}>
-          Serviços
+          Servi&#231;os
         </a>
         <a href="/#confianca" tabIndex={isHero ? -1 : undefined}>
-          Segurança
+          Seguran&#231;a
         </a>
         <a href="/#localizacao" tabIndex={isHero ? -1 : undefined}>
-          Localização
+          Localiza&#231;&#227;o
         </a>
         <a href="/#contato" tabIndex={isHero ? -1 : undefined}>
           Contato
@@ -108,32 +130,27 @@ export default function Navbar() {
 
       <div className={`menuOverlay ${isMenuOpen ? "menuOverlayOpen" : ""}`} aria-hidden={!isMenuOpen}>
         <nav className="menuPanel" aria-label="Menu completo">
-          <a href="/#hangar" onClick={() => setIsMenuOpen(false)}>
-            Hangar
-          </a>
-          <a href="/servicos" onClick={() => setIsMenuOpen(false)}>
-            Serviços
-          </a>
-          <a href="/#confianca" onClick={() => setIsMenuOpen(false)}>
-            Segurança
-          </a>
-          <a href="/#localizacao" onClick={() => setIsMenuOpen(false)}>
-            Localização
-          </a>
-
-          <a href="/#contato" onClick={() => setIsMenuOpen(false)}>
-            Contato
-          </a>
-          <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">
-            Instagram
-          </a>
+          {menuLinks.map((link, index) => (
+            <a
+              href={link.href}
+              key={link.label}
+              onClick={() => setIsMenuOpen(false)}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noreferrer" : undefined}
+              aria-label={link.label}
+              data-index={String(index + 1).padStart(2, "0")}
+              style={{ "--menu-link-index": index } as CSSProperties}
+            >
+              {renderAnimatedLabel(link.label)}
+            </a>
+          ))}
         </nav>
 
         <div className="menuFooter">
           <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
           <a href="tel:+5511940895758">(11) 94089-5758</a>
-          <a href="https://wa.me/5511940895758" target="_blank" rel="noreferrer">WhatsApp</a>
-          <span>Campo de Marte · CASP</span>
+          <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">Instagram</a>
+          <span>Campo de Marte &#183; CASP</span>
           <span>Well Of Hangar</span>
         </div>
       </div>

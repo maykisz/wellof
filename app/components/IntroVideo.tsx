@@ -136,14 +136,11 @@ export default function IntroVideo() {
   }
 
   useEffect(() => {
-    // Intro is mandatory: always run the intro sequence on page load.
-
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
     if (!video) return;
 
-    // Detect slow connections or small screens and use a lightweight fallback.
     const connection = (navigator as any).connection;
     const effectiveType = connection?.effectiveType;
     const saveData = connection?.saveData;
@@ -163,7 +160,6 @@ export default function IntroVideo() {
       const onEnded = () => finishIntro();
 
       video.addEventListener("ended", onEnded);
-      // attempt to play (mandatory intro)
       void video.play().catch(() => undefined);
 
       return () => {

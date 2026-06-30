@@ -173,9 +173,21 @@
   }
 
   .headline {
-    max-width: 11.5ch;
-    font-size: clamp(42px, 12vw, 66px);
+    max-width: 100%;
+    font-size: clamp(40px, 10.8vw, 58px);
     line-height: 1.02;
+    text-wrap: balance;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .headline span {
+    display: inline;
+  }
+
+  .headline .space {
+    width: auto;
+    white-space: normal;
   }
 
   .details {

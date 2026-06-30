@@ -1,7 +1,9 @@
 node_modules/
 .next/
+.tmp/
 .codex/
 tsconfig.tsbuildinfo
+footer-before*.png
 
 # Generated media artifacts
 public/media-backups/

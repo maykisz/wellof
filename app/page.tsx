@@ -12,7 +12,7 @@ import TrustSection from "./components/TrustSection/TrustSection";
 
 export default function Home() {
   return (
-    <main className="pageShell">
+    <main className="pageShell" id="top">
       <IntroVideo />
       <Navbar />
       <HeroSection />

@@ -156,7 +156,6 @@ export default function ServicesSection() {
     event.clientX - rect.left < rect.width / 2 ? prev() : next();
   };
 
-  // Auto-advance slide quando scroll está no final da seção
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (scrollProgress < 0.88) return;
@@ -174,7 +173,6 @@ export default function ServicesSection() {
     };
   }, [progressKey, scrollProgress]);
 
-  // Scroll progress + scene pinned
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -186,10 +184,12 @@ export default function ServicesSection() {
       frame = requestAnimationFrame(() => {
         const rect = section.getBoundingClientRect();
         const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
-        setScrollProgress(clamp(-rect.top / scrollable));
+        const viewport = window.innerHeight || 1;
+        const entranceOffset = viewport * 0.55;
+        setScrollProgress(clamp((entranceOffset - rect.top) / (scrollable + entranceOffset)));
         const nextTop =
           document.querySelector("#confianca")?.getBoundingClientRect().top ?? rect.bottom;
-        setScenePinned(rect.top <= 0 && nextTop > 0);
+        setScenePinned(rect.top <= entranceOffset && nextTop > 0);
       });
     };
 
@@ -204,7 +204,6 @@ export default function ServicesSection() {
     };
   }, []);
 
-  // Intersection observer para animar entrada
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -257,9 +256,7 @@ export default function ServicesSection() {
       }
     >
       <div className={styles.inner}>
-        {/* ── Intro scene (fixed overlay) ── */}
         <div className={styles.introScene}>
-          {/* Headline central */}
           <div className={styles.introCopy}>
             <span>Well Of Hangar</span>
             <p className={styles.introHeadline}>
@@ -271,7 +268,6 @@ export default function ServicesSection() {
             </p>
           </div>
 
-          {/* Cards de feedback orbitando */}
           {feedbackCards.map((card, index) => {
             const entry = smoothStep((scrollProgress - (0.03 + index * 0.018)) / 0.2);
             const cardProgress = entry * (1 - cardsExit);
@@ -296,7 +292,6 @@ export default function ServicesSection() {
             );
           })}
 
-          {/* Watermark "SERVICOS" animada por letra */}
           <div className={styles.featureServiceTitle} aria-label="Servicos">
             {Array.from(SERVICE_WORD).map((letter, index) => {
               const titleLetterProgress = smoothStep(
@@ -314,7 +309,6 @@ export default function ServicesSection() {
             })}
           </div>
 
-          {/* Slider cinematográfico */}
           <div
             className={styles.featureReveal}
             onClick={handleFeatureClick}
@@ -329,7 +323,6 @@ export default function ServicesSection() {
               {current.sideRight}
             </span>
 
-            {/* Imagem saindo */}
             {hasPrevious && (
               <Image
                 key={`feature-prev-${previous.slug}-${progressKey}`}
@@ -341,7 +334,6 @@ export default function ServicesSection() {
               />
             )}
 
-            {/* Imagem entrando */}
             <Image
               key={`feature-curr-${current.slug}-${progressKey}`}
               src={current.image}
@@ -351,7 +343,6 @@ export default function ServicesSection() {
               className={styles.mainImageCurrent}
             />
 
-            {/* Wipe de transição — FIX #10: --panel-count removido, não é consumido pelo CSS */}
             <span
               key={`sweep-${progressKey}`}
               className={styles.panelSweep}
@@ -364,7 +355,6 @@ export default function ServicesSection() {
 
             <span className={styles.featureHoverCursor} aria-hidden="true" />
 
-            {/* Caption do serviço atual */}
             <div
               key={`caption-${current.slug}`}
               className={styles.featureServiceCaption}
@@ -377,7 +367,6 @@ export default function ServicesSection() {
               </a>
             </div>
 
-            {/* Thumbnails de seleção */}
             <div className={styles.featureThumbs} aria-label="Selecionar servico">
               {services.map((service, index) => (
                 <button
@@ -394,7 +383,6 @@ export default function ServicesSection() {
             </div>
           </div>
 
-          {/* Progress dots laterais */}
           <div className={styles.featureProgress} aria-hidden="true">
             {services.map((service, index) => (
               <span
@@ -406,7 +394,6 @@ export default function ServicesSection() {
           </div>
         </div>
 
-        {/* ── Título tipográfico animado (scroll final) ── */}
         <h2 className={styles.word} aria-label="Servicos">
           {Array.from(SERVICE_WORD).map((letter, index) => {
             const letterProgress = smoothStep((wordProgress - index * 0.06) / 0.28);
@@ -427,7 +414,6 @@ export default function ServicesSection() {
           })}
         </h2>
 
-        {/* ── Showcase (layout de destaque no scroll final) ── */}
         <div className={styles.showcase} aria-hidden="true">
           <button
             type="button"

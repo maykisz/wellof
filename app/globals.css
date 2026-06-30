@@ -6,6 +6,15 @@
   --font-sans: "Britanica", Arial, "Helvetica Neue", Helvetica, sans-serif;
   --font-condensed: "Britanica Condensed", "Britanica", Arial, sans-serif;
   --font-expanded: "Britanica Expanded", "Britanica", Arial, sans-serif;
+  --font-jazmin-alt-light: "jazminalt-ligth", "Britanica", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "jazminalt-ligth";
+  src: url("/fonts/fonnts.com-jazminalt-light.otf") format("opentype");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
 }
 
 @font-face {
@@ -527,7 +536,9 @@ body.introFallback .introSkipButton {
   padding: calc(var(--nav-height) + 42px) clamp(28px, 18.5vw, 352px) 46px;
   display: grid;
   grid-template-rows: 1fr auto;
-  background: #f4f4f4;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 36%),
+    #f4f4f4;
   color: #070707;
   opacity: 0;
   pointer-events: none;
@@ -547,15 +558,95 @@ body.introFallback .introSkipButton {
   align-self: center;
   justify-self: center;
   display: grid;
-  gap: clamp(18px, 3.2vh, 34px);
+  gap: clamp(14px, 2.7vh, 29px);
   text-align: center;
 }
 
 .menuPanel a {
+  position: relative;
+  isolation: isolate;
+  width: max-content;
+  justify-self: center;
+  padding: 0.04em 0.28em 0.12em;
   font-size: clamp(42px, 4.4vw, 70px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  animation: menuLinkIn 680ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(110ms + var(--menu-link-index) * 52ms);
+  outline: 0;
+  transition:
+    color 180ms ease,
+    text-shadow 240ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuPanel a::before {
+  content: attr(data-index);
+  position: absolute;
+  right: calc(100% + clamp(12px, 1.7vw, 28px));
+  top: 0.14em;
+  color: rgba(7, 7, 7, 0.22);
+  font-family: var(--font-expanded);
+  font-size: clamp(10px, 0.82vw, 13px);
+  font-weight: 700;
+  line-height: 1;
+  transform: translate3d(8px, 0, 0);
+  opacity: 0;
+  transition:
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuPanel a::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0.28em;
+  right: 0.28em;
+  bottom: -0.08em;
+  height: 2px;
+  background: #070707;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition:
+    opacity 220ms ease,
+    transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuPanel a span {
+  display: inline-block;
+  transform-origin: center 70%;
+  transform: translate3d(0, 0, 0);
+  transition:
+    color 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuPanel a:hover,
+.menuPanel a:focus-visible {
+  color: #000;
+  text-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transform: translate3d(0, -2px, 0);
+}
+
+.menuPanel a:hover::before,
+.menuPanel a:focus-visible::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.menuPanel a:hover::after,
+.menuPanel a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.menuPanel a:hover span,
+.menuPanel a:focus-visible span {
+  animation: menuLetterRoll 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--letter-index) * 18ms);
 }
 
 .menuFooter {
@@ -573,14 +664,75 @@ body.introFallback .introSkipButton {
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition:
+    opacity 180ms ease,
+    text-underline-offset 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuFooter a:hover,
+.menuFooter a:focus-visible {
+  opacity: 0.66;
+  text-underline-offset: 7px;
+  transform: translate3d(0, -2px, 0);
 }
 
 .menuFooter span:nth-child(2) {
   justify-self: center;
 }
 
+.menuFooter a:nth-child(3) {
+  justify-self: end;
+}
+
 .menuFooter span:last-child {
   justify-self: end;
+}
+
+@keyframes menuLinkIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes menuLetterRoll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  38% {
+    transform: translate3d(0, -0.18em, 0) rotateX(18deg);
+  }
+
+  68% {
+    transform: translate3d(0, 0.035em, 0) rotateX(-6deg);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menuPanel a,
+  .menuPanel a:hover span,
+  .menuPanel a:focus-visible span {
+    animation: none;
+  }
+
+  .menuPanel a {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 900px) {
@@ -626,12 +778,28 @@ body.introFallback .introSkipButton {
     padding: calc(var(--nav-height) + 28px) 24px 30px;
   }
 
+  .menuPanel {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .menuPanel a {
+    justify-self: start;
+    padding-left: 0;
+    font-size: clamp(42px, 14.4vw, 62px);
+  }
+
+  .menuPanel a::before {
+    display: none;
+  }
+
   .menuFooter {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
   .menuFooter span:nth-child(2),
+  .menuFooter a:nth-child(3),
   .menuFooter span:last-child {
     justify-self: start;
   }

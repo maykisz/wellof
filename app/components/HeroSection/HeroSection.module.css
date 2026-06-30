@@ -219,10 +219,19 @@
   }
 
   .actions {
-    gap: 12px;
+    width: min(100%, 420px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
+  .cta,
   .secondaryCta {
-    width: fit-content;
+    width: 100%;
+    min-width: 0;
+    padding-inline: 18px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.08;
   }
 }

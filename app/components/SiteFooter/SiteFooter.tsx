@@ -1,72 +1,44 @@
 "use client";
 
-import Image from "next/image";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./SiteFooter.module.css";
 
-const gallery = [
-  { src: "/footer/wellof-footer-hangar.webp", alt: "Aeronave no hangar Well Of" },
-  { src: "/about/team-hangar.webp", alt: "Equipe Well Of no hangar" },
-  { src: "/about/team-inspection.webp", alt: "Atendimento junto a aeronave no hangar" },
-  { src: "/about/team-access.webp", alt: "Recepção de cliente no hangar" },
-  { src: "/services/jet-wing-glass.webp", alt: "Aeronave dentro do hangar" },
+const navigationLinks = [
+  { label: "Hangar", href: "/#hangar" },
+  { label: "Segurança", href: "/#confianca" },
+  { label: "Servi\u00e7os", href: "/servicos" },
+  { label: "Localiza\u00e7\u00e3o", href: "/#localizacao" },
+  { label: "Contato", href: "/#contato" },
 ];
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
-
-function smoothStep(value: number) {
-  const progress = clamp(value, 0, 1);
-  return progress * progress * (3 - 2 * progress);
-}
+const socialLinks = [
+  { label: "Instagram", href: "https://www.instagram.com/wellof.hangar/" },
+  { label: "WhatsApp", href: "https://wa.me/5511940895758" },
+  { label: "E-mail", href: "mailto:contato@wellof.com.br" },
+];
 
 export default function SiteFooter() {
   const footerRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const updateProgress = () => {
-      const footer = footerRef.current;
-
-      if (!footer) {
-        return;
-      }
-
-      const rect = footer.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const current = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
-      setProgress(current);
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, []);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const footer = footerRef.current;
-    const video = videoRef.current;
 
-    if (!footer || !video) {
+    if (!footer) {
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          void video.play();
-        } else {
-          video.pause();
+          setIsVisible(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.2 },
+      {
+        rootMargin: "-8% 0px -18%",
+        threshold: 0.18,
+      },
     );
 
     observer.observe(footer);
@@ -74,96 +46,85 @@ export default function SiteFooter() {
     return () => observer.disconnect();
   }, []);
 
-  const logoProgress = smoothStep((progress - 0.22) / 0.46);
-  const logoReveal = smoothStep((progress - 0.18) / 0.24);
-  const panelProgress = smoothStep((progress - 0.58) / 0.4);
-  const galleryProgress = smoothStep((progress - 0.78) / 0.26);
-
   return (
     <footer
       ref={footerRef}
-      className={styles.footer}
+      className={`${styles.footer} ${isVisible ? styles.footerVisible : ""}`}
       data-navbar-theme="dark"
-      style={
-        {
-          "--panel-top": `${100 - panelProgress * 74}vh`,
-          "--logo-y": `${118 - logoProgress * 68}vh`,
-          "--logo-scale": 0.78 + logoProgress * 0.22,
-          "--logo-opacity": logoReveal,
-          "--gallery-opacity": galleryProgress,
-          "--gallery-y": `${(1 - galleryProgress) * 42}px`,
-        } as CSSProperties
-      }
     >
-      <div className={styles.stage}>
-        <div className={styles.imageLayer}>
-          <video
-            ref={videoRef}
-            className={styles.footerVideo}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster="/footer/video-fundo.poster.jpg"
-            aria-label="Vídeo do hangar Well Of"
-          >
-            <source src="/footer/video-fundo.opt.mp4" type="video/mp4" />
-          </video>
-          <div className={styles.imageShade} />
-          <nav className={styles.topNav} aria-label="Links do rodapé">
-            <a href="/#hangar">Hangar</a>
-            <a href="/servicos">Serviços</a>
-            <a href="/#localizacao">Localização</a>
+      <section className={styles.infoPanel} aria-label="Rodap\u00e9 Well Of">
+        <a className={styles.topLogo} href="/" aria-label="Well Of">
+          <img src="/footer/wellof-logo-small-white.png" alt="" />
+        </a>
+
+        <div className={styles.navigation}>
+          <nav className={styles.mainNav} aria-label="Links principais do rodap\u00e9">
+            {navigationLinks.map((link) => (
+              <a href={link.href} key={link.label}>
+                {link.label}
+              </a>
+            ))}
           </nav>
         </div>
 
-        <Image
-          className={`${styles.bigLogo} ${styles.bigLogoDark}`}
-          src="/logo-branca.webp"
-          alt="Well Of"
-          width={900}
-          height={252}
-          priority={false}
-        />
+        <div className={styles.details}>
+          <p className={styles.detailsLabel}>(DETALHES DO HANGAR)</p>
 
-        <div className={styles.blackPanel}>
-          <Image
-            className={`${styles.bigLogo} ${styles.bigLogoLight}`}
-            src="/logo-preta.webp"
-            alt=""
-            width={900}
-            height={252}
-            priority={false}
-          />
-
-          <div className={styles.footerBar}>
-            <a href="mailto:contato@wellof.com.br">contato@wellof.com.br</a>
-            <a href="tel:+5511940895758">(11) 94089-5758</a>
-            <nav aria-label="Links principais do rodapé">
-              <a href="/#hangar">Hangar</a>
-              <a href="/servicos">Serviços</a>
-              <a href="/#contato">Contato</a>
-            </nav>
-            <a href="https://www.instagram.com/wellof.hangar/" target="_blank" rel="noreferrer">
-              Instagram
-            </a>
-          </div>
-
-          <div className={styles.gallery}>
-            {gallery.map((item) => (
-              <figure className={styles.galleryItem} key={item.src}>
-                <Image src={item.src} alt={item.alt} fill sizes="20vw" />
-              </figure>
+          <nav className={styles.socialNav} aria-label="Links de contato">
+            {socialLinks.map((link) => (
+              <a
+                href={link.href}
+                key={link.label}
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+              >
+                {link.label} <span aria-hidden="true">&#8599;</span>
+              </a>
             ))}
+          </nav>
+
+          <div className={styles.partnerBadge}>
+            <span>W</span>
+            Hangar premium
           </div>
 
-          <div className={styles.legal}>
-            <span>&copy; 2026 Well Of Hangar</span>
-            <span>Campo de Marte, junto à CASP</span>
-            <span>Dados formais apresentados no atendimento e contrato.</span>
-          </div>
+          <p className={styles.address}>
+            Base em S&#227;o Paulo, Brasil.
+            <br />
+            Atendimento nacional.
+          </p>
+
+          <a className={styles.email} href="mailto:contato@wellof.com.br">
+            &#8627; contato@wellof.com.br
+          </a>
         </div>
-      </div>
+
+        <div className={styles.panelFooter}>
+          <p>
+            Campo de Marte
+            <br />
+            S&#227;o Paulo - SP (GMT -03)
+          </p>
+
+          <p>
+            <a href="#top">Voltar ao topo &#8593;</a>
+            <br />
+            Projetos e hangaragem sob consulta
+          </p>
+
+          <p>&copy;2026 WELL OF Hangar</p>
+        </div>
+      </section>
+
+      <section className={styles.imagePanel} aria-label="Assinatura Well Of">
+        <video className={styles.waveVideo} autoPlay muted playsInline preload="metadata" aria-hidden="true">
+          <source src="/ondas.mp4" type="video/mp4" />
+        </video>
+
+        <img src="/footer/wellof-logo-small-white.png" alt="Well Of" className={styles.footerLogo} />
+
+        <p className={styles.quote}>&#12302;Seu hangar, em outro n&#237;vel.&#12303;</p>
+      </section>
     </footer>
   );
 }
